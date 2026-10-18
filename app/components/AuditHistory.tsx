@@ -144,7 +144,7 @@ export function AuditHistory() {
           <form className="audit-search" onSubmit={submitSearch}>
             <Search size={18} />
             <label className="sr-only" htmlFor="audit-search">Buscar no histórico</label>
-            <input id="audit-search" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Cliente, usuário ou ação..." />
+            <input id="audit-search" name="busca-historico" autoComplete="off" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Cliente, usuário ou ação…" />
             <button type="submit">Buscar</button>
           </form>
           <label className="audit-filter">

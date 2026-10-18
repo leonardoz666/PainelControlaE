@@ -102,14 +102,14 @@ function ImageAsset({
   return (
     <div className="flex min-w-0 flex-col gap-3 rounded-xl bg-violet-50/70 p-4 sm:flex-row sm:items-center">
       <div className={`${wide ? "aspect-[16/9] w-full sm:w-40" : "h-20 w-20"} grid shrink-0 place-items-center overflow-hidden rounded-xl bg-white p-2 shadow-[0_6px_18px_rgba(45,27,102,0.09)]`}>
-        {value ? <img src={value} alt={`Prévia: ${title}`} className={`h-full w-full ${wide ? "object-cover" : "object-contain"}`} /> : <ImagePlus size={24} className="text-violet-300" aria-hidden />}
+        {value ? <img src={value} alt={`Prévia: ${title}`} width={wide ? 640 : 160} height={wide ? 360 : 160} className={`h-full w-full ${wide ? "object-cover" : "object-contain"}`} /> : <ImagePlus size={24} className="text-violet-300" aria-hidden />}
       </div>
       <div className="min-w-0 flex-1">
         <p className="m-0 text-sm font-extrabold text-slate-900">{title}</p>
         <p className="mt-1 text-xs leading-5 text-slate-600">{description}</p>
         <div className="mt-2 flex flex-wrap gap-2">
           <label className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-lg bg-slate-900 px-3.5 text-sm font-bold text-white hover:bg-slate-700 focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-violet-700">
-            <ImagePlus size={16} />{loading ? "Preparando..." : value ? "Trocar" : "Escolher"}
+            <ImagePlus size={16} />{loading ? "Preparando…" : value ? "Trocar" : "Escolher"}
             <input type="file" accept="image/png,image/jpeg,image/webp" onChange={onSelect} disabled={loading} className="sr-only" />
           </label>
           {value && <button type="button" onClick={onRemove} className="inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-bold text-red-700 hover:bg-red-50"><Trash2 size={16} />Remover</button>}
@@ -292,7 +292,7 @@ export function BrandingEditor({
           <div className="overflow-hidden rounded-xl bg-white shadow-[0_12px_30px_rgba(36,19,93,0.12)]">
           <div className="flex min-h-48 flex-col justify-between p-5" style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>
             <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-lg bg-white/15 p-2">{navigationLogo ? <img src={navigationLogo} alt="" className="h-full w-full object-contain" /> : <strong className="text-xl">{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
+              <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-lg bg-white/15 p-2">{navigationLogo ? <img src={navigationLogo} alt="" width={48} height={48} className="h-full w-full object-contain" /> : <strong className="text-xl">{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
               <strong>{form.nomeExibicao || establishment.nome}</strong>
             </div>
             <p className="m-0 text-2xl font-extrabold leading-tight tracking-[-0.03em]">{form.slogan || "Sua mensagem aparece aqui."}</p>
@@ -308,7 +308,7 @@ export function BrandingEditor({
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative z-10 grid min-h-56 place-items-center p-6 text-center text-white">
               <div>
-                <div className="mx-auto grid h-16 w-24 place-items-center overflow-hidden rounded-xl bg-white/15 p-2 backdrop-blur-sm">{form.logoUrl ? <img src={form.logoUrl} alt="" className="h-full w-full object-contain" /> : <strong className="text-2xl">{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
+                <div className="mx-auto grid h-16 w-24 place-items-center overflow-hidden rounded-xl bg-white/15 p-2 backdrop-blur-sm">{form.logoUrl ? <img src={form.logoUrl} alt="" width={96} height={64} className="h-full w-full object-contain" /> : <strong className="text-2xl">{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
                 <strong className="mt-3 block text-xl">{form.nomeExibicao || establishment.nome}</strong>
                 <span className="mt-1 block text-xs text-white/80">{form.slogan || "Sua mensagem aparece aqui."}</span>
               </div>
@@ -319,7 +319,7 @@ export function BrandingEditor({
 
       <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
         <button type="button" onClick={() => setForm({ ...form, nomeExibicao: form.nome, slogan: "Operação, atendimento e gestão em um só lugar.", logoUrl: "", logoCompactaUrl: "", faviconUrl: "", imagemLoginUrl: "", fonteInterface: "MODERNA", temaPadrao: "SISTEMA", ...DEFAULT_COLORS })} disabled={saving} className="secondary-button inline-flex items-center justify-center gap-2"><RotateCcw size={16} />Restaurar padrão</button>
-        <button disabled={saving || Boolean(imageLoading)} className="primary-button"><Save size={17} />{saving ? "Salvando..." : "Salvar personalização"}</button>
+        <button disabled={saving || Boolean(imageLoading)} className="primary-button"><Save size={17} />{saving ? "Salvando…" : "Salvar personalização"}</button>
       </div>
     </form>
   );

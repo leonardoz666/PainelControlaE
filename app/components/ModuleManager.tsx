@@ -105,7 +105,7 @@ export function ModuleManager({ establishment, onClose, onSaved }: ModuleManager
       </div>
 
       {loading ? (
-        <div className="module-loading" role="status"><LoaderCircle size={18} className="animate-spin" /> Carregando catálogo...</div>
+        <div className="module-loading" role="status"><LoaderCircle size={18} className="animate-spin" /> Carregando catálogo…</div>
       ) : catalog.length === 0 && !error ? (
         <div className="module-loading"><PackageOpen size={18} /> Nenhum módulo cadastrado.</div>
       ) : (

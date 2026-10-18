@@ -74,7 +74,7 @@ export function DeleteEstablishmentDialog({
           <button type="button" className="secondary-button" onClick={onClose} disabled={deleting}>Cancelar</button>
           <button type="submit" className="danger-button danger-button--solid" disabled={deleting || confirmation !== requiredConfirmation}>
             {deleting ? <LoaderCircle size={18} className="animate-spin" /> : <Trash2 size={18} />}
-            {deleting ? "Excluindo tudo..." : "Excluir tudo definitivamente"}
+            {deleting ? "Excluindo tudo…" : "Excluir tudo definitivamente"}
           </button>
         </div>
       </form>

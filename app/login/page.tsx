@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Building2, Eye, EyeOff, LoaderCircle, LockKeyhole } from 'lucide-react'
+import { Crown, Eye, EyeOff, LoaderCircle, LockKeyhole } from 'lucide-react'
 import { api, ApiError } from '@/app/lib/api'
 
 export default function LoginPage() {
@@ -32,35 +32,35 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="grid min-h-screen lg:grid-cols-[minmax(0,1fr)_520px]">
-      <section className="hidden bg-slate-950 p-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <div className="flex items-center gap-3 text-lg font-bold"><Building2 className="text-orange-500" /> ControlaÊ</div>
-        <div className="max-w-2xl">
-          <h1 className="max-w-xl text-5xl font-bold leading-[1.05] tracking-[-0.04em]">Todos os estabelecimentos sob o seu controle.</h1>
-          <p className="mt-6 max-w-lg text-lg leading-8 text-slate-300">Administre acessos, assinaturas e disponibilidade sem entrar na operação dos restaurantes.</p>
+    <main id="main-content" className="login-shell">
+      <section className="login-brand-panel" aria-label="ControlaÊ">
+        <div className="login-brand"><span><Crown size={23} aria-hidden="true" /></span><div><strong>ControlaÊ</strong><small>Painel CEO</small></div></div>
+        <div className="login-message">
+          <h1>Controle da plataforma, sem interferir na operação.</h1>
+          <p>Gerencie estabelecimentos, acessos e disponibilidade em um ambiente separado dos restaurantes.</p>
         </div>
-        <p className="text-sm text-slate-400">Ambiente exclusivo da administração da plataforma.</p>
+        <p className="login-environment"><LockKeyhole size={15} aria-hidden="true" /> Ambiente restrito à administração</p>
       </section>
 
-      <section className="flex items-center justify-center bg-white px-6 py-12">
-        <form onSubmit={submit} className="w-full max-w-sm" aria-busy={loading}>
-          <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-white shadow-sm lg:hidden"><LockKeyhole /></div>
-          <h2 className="text-3xl font-bold tracking-[-0.03em] text-slate-950">Entrar no painel CEO</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">Use seu acesso global. Usuários de restaurantes não entram por aqui.</p>
+      <section className="login-access-panel">
+        <form onSubmit={submit} className="login-form" aria-busy={loading}>
+          <div className="login-mobile-mark"><Crown size={22} aria-hidden="true" /></div>
+          <h2>Entrar no Painel CEO</h2>
+          <p>Use sua credencial administrativa. Acessos dos restaurantes entram pelo link de cada estabelecimento.</p>
 
-          <label className="mt-8 block text-sm font-bold text-slate-900" htmlFor="email">E-mail</label>
-          <input id="email" type="email" autoComplete="username" required value={email} onChange={event => setEmail(event.target.value)} className="mt-2 h-12 w-full rounded-lg border border-slate-300 px-3 text-slate-950 shadow-sm transition focus:border-orange-500" />
+          <label className="login-label" htmlFor="email">E-mail</label>
+          <input id="email" type="email" autoComplete="username" spellCheck={false} required value={email} onChange={event => setEmail(event.target.value)} className="login-input" />
 
-          <label className="mt-5 block text-sm font-bold text-slate-900" htmlFor="senha">Senha</label>
-          <div className="relative mt-2">
-            <input id="senha" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required value={senha} onChange={event => setSenha(event.target.value)} className="h-12 w-full rounded-lg border border-slate-300 px-3 pr-12 text-slate-950 shadow-sm transition focus:border-orange-500" />
-            <button type="button" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'} className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-500 hover:text-slate-900">{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button>
+          <label className="login-label" htmlFor="senha">Senha</label>
+          <div className="login-password">
+            <input id="senha" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required value={senha} onChange={event => setSenha(event.target.value)} className="login-input" />
+            <button type="button" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}>{showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}</button>
           </div>
 
-          {error && <p role="alert" className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-800">{error}</p>}
-          <button disabled={loading} className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-4 font-bold text-white shadow-sm transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-60">
-            {loading && <LoaderCircle size={18} className="animate-spin" />}
-            {loading ? 'Entrando...' : 'Entrar'}
+          {error && <p role="alert" aria-live="polite" className="login-error">{error}</p>}
+          <button disabled={loading} className="login-submit">
+            {loading && <LoaderCircle size={18} className="animate-spin" aria-hidden="true" />}
+            {loading ? 'Entrando…' : 'Entrar'}
           </button>
         </form>
       </section>

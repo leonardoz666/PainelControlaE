@@ -48,7 +48,7 @@ export function FormActions({
         Cancelar
       </button>
       <button type="submit" disabled={saving} className="primary-button">
-        {label}
+        {saving ? "Salvando…" : label}
       </button>
     </div>
   );

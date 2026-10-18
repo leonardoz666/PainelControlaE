@@ -80,7 +80,7 @@ function Metric({
   return (
     <div className={`metric-card metric-card--${tone}`}>
       <span className="metric-icon">
-        <Icon size={19} />
+        <Icon size={19} aria-hidden="true" />
       </span>
       <div className="relative z-10 min-w-0">
         <p className="metric-value">{value}</p>
@@ -413,6 +413,7 @@ export default function DashboardPage() {
 
   return (
     <div className="ceo-shell">
+      <a href="#main-content" className="skip-link">Pular para o conteúdo</a>
       <aside className="ceo-sidebar">
         <div className="sidebar-brand">
           <span className="brand-mark"><Crown size={25} strokeWidth={2.1} /></span>
@@ -421,10 +422,6 @@ export default function DashboardPage() {
             <p className="brand-caption">Painel CEO</p>
           </div>
         </div>
-
-        <button onClick={() => void logout()} className="sidebar-logout">
-          <LogOut size={19} /> <span>Sair</span>
-        </button>
 
         <nav className="sidebar-nav" aria-label="Navegação principal">
           <button type="button" onClick={() => setActiveView("establishments")} className={`sidebar-nav-item ${activeView === "establishments" ? "sidebar-nav-item--active" : ""}`} aria-current={activeView === "establishments" ? "page" : undefined}>
@@ -435,13 +432,17 @@ export default function DashboardPage() {
           </button>
         </nav>
 
+        <button onClick={() => void logout()} className="sidebar-logout">
+          <LogOut size={19} aria-hidden="true" /> <span>Sair</span>
+        </button>
+
         <div className="sidebar-footer">
           <span className="sidebar-footer-icon"><Crown size={18} /></span>
           <div><strong>ControlaÊ</strong><small>v1.0.0</small></div>
         </div>
       </aside>
 
-      <main className="ceo-main">
+      <main id="main-content" className="ceo-main">
         <p className="sr-only" aria-live="polite" aria-atomic="true">{announcement}</p>
         <div className="ceo-content">
           <header className="page-header">
@@ -514,8 +515,8 @@ export default function DashboardPage() {
               </div>
               <label className="search-field">
                 <span className="sr-only">Buscar estabelecimento</span>
-                <Search size={18} />
-                <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar estabelecimento..." />
+                <Search size={18} aria-hidden="true" />
+                <input type="search" name="busca-estabelecimento" autoComplete="off" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar estabelecimento…" />
               </label>
             </div>
 
@@ -540,7 +541,7 @@ export default function DashboardPage() {
                 {visibleItems.map((item) => (
                   <article key={item.id} className="client-card">
                     <div className="client-main">
-                      <span className="client-logo"><Crown size={29} /></span>
+                      <span className="client-logo"><Crown size={29} aria-hidden="true" /></span>
                       <div className="client-identity">
                         <div className="client-title-line">
                           <h3>{item.nome}</h3>

@@ -1,19 +1,19 @@
 ---
 name: ControlaÊ — Painel CEO
-description: Um painel executivo luminoso para operar estabelecimentos com clareza, confiança e ritmo.
+description: Uma mesa de controle executiva, compacta e sóbria para operar estabelecimentos com clareza.
 colors:
-  rail-deep: "#24135d"
-  rail-mid: "#302075"
-  primary: "#6438de"
-  primary-action: "#6b2ee1"
-  primary-hover: "#5425c6"
-  primary-soft: "#eee9ff"
+  rail-deep: "#221746"
+  rail-mid: "#30205f"
+  primary: "#6546d7"
+  primary-action: "#6546d7"
+  primary-hover: "#5637c1"
+  primary-soft: "#f0edfb"
   crown-orange: "#ff6b00"
-  ink: "#101338"
-  muted: "#64698f"
-  canvas: "#f6f7ff"
-  panel: "rgba(255, 255, 255, 0.88)"
-  border: "#dbdded"
+  ink: "#18172b"
+  muted: "#68677c"
+  canvas: "#f5f5f8"
+  panel: "#ffffff"
+  border: "#e5e4eb"
   focus: "#6c36df"
   success: "#0abf78"
   info: "#3c5ce8"
@@ -22,20 +22,20 @@ colors:
 typography:
   display:
     fontFamily: "Manrope Variable, Segoe UI, sans-serif"
-    fontSize: "clamp(30px, 3vw, 38px)"
-    fontWeight: 820
-    lineHeight: 1.08
-    letterSpacing: "-0.035em"
+    fontSize: "clamp(27px, 2.5vw, 32px)"
+    fontWeight: 800
+    lineHeight: 1.12
+    letterSpacing: "-0.03em"
   headline:
     fontFamily: "Manrope Variable, Segoe UI, sans-serif"
-    fontSize: "21px"
-    fontWeight: 800
+    fontSize: "18px"
+    fontWeight: 790
     lineHeight: 1.2
     letterSpacing: "-0.025em"
   title:
     fontFamily: "Manrope Variable, Segoe UI, sans-serif"
-    fontSize: "19px"
-    fontWeight: 820
+    fontSize: "17px"
+    fontWeight: 800
     lineHeight: 1.2
     letterSpacing: "-0.02em"
   body:
@@ -52,10 +52,10 @@ typography:
     letterSpacing: "normal"
 rounded:
   control-sm: "9px"
-  control: "11px"
-  control-lg: "12px"
-  card: "18px"
-  panel: "24px"
+  control: "9px"
+  control-lg: "10px"
+  card: "12px"
+  panel: "16px"
   pill: "999px"
 spacing:
   compact: "7px"
@@ -63,15 +63,15 @@ spacing:
   md: "14px"
   lg: "18px"
   xl: "24px"
-  page: "34px"
+  page: "32px"
 components:
   button-primary:
     backgroundColor: "{colors.primary-action}"
     textColor: "#ffffff"
     typography: "{typography.label}"
     rounded: "{rounded.control-lg}"
-    padding: "0 21px"
-    height: "48px"
+    padding: "0 17px"
+    height: "42px"
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
     textColor: "#ffffff"
@@ -83,8 +83,8 @@ components:
     padding: "0 18px"
     height: "44px"
   field:
-    backgroundColor: "rgba(255, 255, 255, 0.92)"
-    textColor: "#171a3a"
+    backgroundColor: "#ffffff"
+    textColor: "{colors.ink}"
     typography: "{typography.label}"
     rounded: "{rounded.control}"
     padding: "0 13px"
@@ -93,7 +93,7 @@ components:
     backgroundColor: "{colors.panel}"
     textColor: "{colors.ink}"
     rounded: "{rounded.panel}"
-    padding: "24px"
+    padding: "18px"
   status-pill:
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
@@ -104,18 +104,18 @@ components:
 
 ## Overview
 
-**Creative North Star: "A Sala de Comando Luminosa"**
+**Creative North Star: "A Mesa de Controle"**
 
-O Painel CEO combina a autoridade de uma sala de comando com a leveza de um ambiente luminoso. O rail violeta profundo ancora a navegação e separa o plano de controle da área operacional; a tela principal usa branco translúcido, lilás frio e uma paisagem geométrica muito suave para manter densidade sem peso.
+O Painel CEO é uma mesa de controle administrativa: sóbrio, compacto e orientado a estado. O rail violeta profundo ancora a navegação e separa o plano de controle da área operacional; o canvas neutro e as superfícies brancas deixam os dados, alertas e próximas ações conduzirem a leitura.
 
-A identidade aparece em poucos gestos memoráveis: a coroa laranja, gradientes violetas direcionais, números tabulares e superfícies em camadas. O sistema é expressivo nos marcos de orientação e contido onde o CEO precisa comparar estados, valores e ações rapidamente. Ele preserva o comportamento de negócio e nunca usa decoração para esconder pré-condições ou consequências.
+A identidade aparece em poucos gestos memoráveis: a coroa laranja, o rail violeta, números tabulares e divisões precisas. O sistema evita gradientes decorativos, vidro e coleções de cartões flutuantes. A expressão fica concentrada na marca e nas ações primárias; o restante funciona como uma ferramenta executiva.
 
 **Key Characteristics:**
 
 - Rail violeta profundo como âncora permanente no desktop.
-- Canvas branco-lilás com paisagem de gradientes em baixa opacidade.
+- Canvas cinza frio uniforme, sem paisagem decorativa.
 - Coroa laranja reservada à identidade, não a ações comuns.
-- Painéis brancos translúcidos, bordas claras e sombras ambientais.
+- Painéis brancos opacos, bordas precisas e elevação quase plana.
 - Densidade operacional alta, organizada por blocos curtos e escaneáveis.
 - Estados, foco, placeholders e reorganização mobile sempre legíveis.
 
@@ -141,9 +141,9 @@ A paleta contrapõe violetas reais e profundos a uma base fria, luminosa e quase
 
 - **Tinta Executiva:** texto principal, títulos e valores que exigem leitura imediata.
 - **Cinza Lilás:** explicações, metadados e rótulos secundários.
-- **Canvas Nebuloso:** fundo geral frio, com gradientes atmosféricos discretos.
-- **Vidro Branco:** painéis principais e superfícies de conteúdo.
-- **Borda de Névoa:** delimitação de campos, cartões e divisões internas.
+- **Canvas Neutro:** fundo geral frio e uniforme.
+- **Branco Operacional:** painéis principais e superfícies de conteúdo.
+- **Linha Fria:** delimitação de campos, registros e divisões internas.
 
 **The Crown Reserve Rule.** O laranja pertence à identidade da marca; ações rotineiras permanecem violetas.
 
@@ -171,7 +171,7 @@ A paleta contrapõe violetas reais e profundos a uma base fria, luminosa e quase
 
 ## Layout
 
-No desktop, o shell reserva um rail fixo de 250px e entrega o restante a um canvas fluido. O conteúdo central tem largura máxima de 1480px e respiro de página de 34px. Cabeçalho, métricas e clientes compartilham o mesmo eixo, enquanto cartões de cliente distribuem identidade, cobrança e ações em três zonas claramente separadas.
+No desktop, o shell reserva um rail fixo de 220px e entrega o restante a um canvas fluido. O conteúdo central tem largura máxima de 1440px e respiro de página de 28–32px. Cabeçalho, resumo e clientes compartilham o mesmo eixo. O resumo forma uma faixa contínua de cinco células; clientes formam registros separados por linhas, com identidade, cobrança e ações em zonas previsíveis.
 
 O ritmo usa intervalos compactos de 7–14px dentro de controles e grupos, 18–24px entre blocos internos e 25–34px entre seções. Isso mantém as ações densas sem parecerem apertadas. As métricas formam cinco colunas no desktop, três em telas intermediárias e duas no mobile; cartões de clientes quebram de três zonas para duas e finalmente para uma coluna.
 
@@ -183,25 +183,22 @@ Abaixo de 980px, o rail torna-se um cabeçalho de altura natural e a navegação
 
 ## Elevation & Depth
 
-O sistema usa profundidade em camadas: gradientes amplos definem a paisagem, painéis translúcidos com blur separam áreas e sombras violetas de baixa opacidade criam elevação ambiental. Sombras mais concentradas ficam reservadas a ações primárias e à coroa; cartões comuns devem parecer pousados, não flutuantes.
+O sistema é essencialmente plano. Bordas frias e mudanças sutis de superfície separam regiões; sombras aparecem apenas em painéis agregadores e ações primárias, com baixa amplitude. Cartões filhos não flutuam dentro de outros cartões.
 
 ### Shadow Vocabulary
 
-- **Rail:** (`12px 0 38px rgba(44, 28, 112, .15)`) separa a navegação do canvas.
-- **Panel Ambient:** (`0 18px 46px rgba(68, 54, 146, .1)`) sustenta painéis grandes translúcidos.
-- **Card Rest:** (`0 9px 24px rgba(65, 50, 130, .055)`) diferencia clientes sem criar ruído.
-- **Primary Action:** (`0 11px 25px rgba(104, 48, 221, .28)`) dá presença controlada aos CTAs.
-- **Crown Glow:** (`0 10px 24px rgba(255, 91, 0, .27)`) acompanha exclusivamente a assinatura laranja.
+- **Panel Rest:** (`0 1px 2px rgba(34, 28, 58, .04)`) separa painéis grandes do canvas.
+- **Primary Action:** (`0 4px 12px rgba(76, 49, 161, .2)`) dá presença controlada aos CTAs.
 
-**The Ambient Depth Rule.** Profundidade padrão é difusa e violeta; sombras escuras e duras quebram a atmosfera luminosa.
+**The Flat Operations Rule.** Estrutura nasce de bordas, alinhamento e proximidade; sombra não substitui hierarquia.
 
-**The Two-Layer Limit.** Dentro de um painel elevado, cartões filhos recebem apenas elevação baixa; não empilhe múltiplos glows fortes.
+**The One-Container Rule.** Registros repetidos compartilham um contêiner e são separados por linhas; evite empilhar cartões filhos com elevação própria.
 
 ## Shapes
 
-Controles usam cantos suavemente arredondados de 9–12px, cartões operacionais usam 16–18px e painéis de seção chegam a 23–24px. Pílulas são totalmente arredondadas e reservadas a estados compactos. A coroa aparece em quadrados arredondados com gradiente, criando uma silhueta constante entre marca e clientes.
+Controles usam cantos suavemente arredondados de 8–10px e painéis operacionais usam 14–16px. Pílulas são totalmente arredondadas e reservadas a estados compactos. A coroa aparece em quadrados arredondados laranja, criando uma silhueta constante entre marca e clientes.
 
-Bordas são claras, finas e frias. A geometria de fundo pode usar arcos e diagonais grandes em baixa opacidade, mas o conteúdo permanece ortogonal e previsível. Evite misturar cantos retos, círculos decorativos e raios aleatórios no mesmo componente.
+Bordas são claras, finas e frias. O canvas permanece uniforme; o conteúdo usa geometria ortogonal e previsível. Evite misturar cantos retos, círculos decorativos e raios aleatórios no mesmo componente.
 
 **The Radius Ladder Rule.** Controle, cartão e painel devem subir de forma reconhecível na escala de raio; o tamanho do contêiner determina a curvatura.
 
@@ -210,8 +207,8 @@ Bordas são claras, finas e frias. A geometria de fundo pode usar arcos e diagon
 ### Buttons
 
 - **Shape:** controles firmes e arredondados, normalmente com 11–12px de raio e altura mínima de 44–48px.
-- **Primary:** texto branco sobre gradiente violeta, peso forte, ícone opcional e espaçamento horizontal confortável.
-- **Hover / Focus:** hover sobe 1px e intensifica sombra/gradiente; foco por teclado usa contorno violeta de 3px com offset de 3px. Movimento é praticamente removido quando o sistema solicita redução.
+- **Primary:** texto branco sobre violeta sólido, peso forte, ícone opcional e espaçamento horizontal confortável.
+- **Hover / Focus:** hover sobe 1px e aprofunda a cor; foco por teclado usa contorno violeta de 3px com offset de 3px. Movimento é praticamente removido quando o sistema solicita redução.
 - **Secondary / Ghost:** secundários usam lilás-neutro e texto escuro; ações textuais ficam transparentes. Estados desabilitados reduzem opacidade e removem deslocamento.
 
 ### Chips
@@ -221,29 +218,29 @@ Bordas são claras, finas e frias. A geometria de fundo pode usar arcos e diagon
 
 ### Cards / Containers
 
-- **Corner Style:** 18px para cartões de cliente e 23–24px para painéis agregadores.
-- **Background:** branco quase opaco nos cartões; vidro branco translúcido nos painéis.
-- **Shadow Strategy:** use Panel Ambient no contêiner e Card Rest nos filhos.
-- **Border:** linha fria de 1px; bordas brancas translúcidas reforçam painéis de vidro.
-- **Internal Padding:** 20–24px em cartões e formulários; painéis de lista podem usar uma moldura compacta de 10px.
+- **Corner Style:** 12px para blocos locais e 14–16px para painéis agregadores.
+- **Background:** branco opaco em painéis e registros operacionais.
+- **Shadow Strategy:** use apenas Panel Rest em contêineres agregadores; filhos são planos.
+- **Border:** linha fria de 1px separa regiões e registros.
+- **Internal Padding:** 16–20px em registros e formulários.
 
 ### Inputs / Fields
 
-- **Style:** fundo branco translúcido, borda fria de 1px, raio de 11–12px e altura de 43–45px.
+- **Style:** fundo branco, borda fria de 1px, raio de 9px e altura de 38–45px.
 - **Focus:** borda muda para violeta claro com halo externo suave, além do contorno global visível por teclado.
 - **Placeholder / Disabled:** placeholders mantêm contraste legível; desabilitado nunca depende apenas de cor e deve preservar o rótulo.
 
 ### Navigation
 
-O rail usa branco e lavanda sobre violeta profundo. A opção ativa recebe gradiente violeta mais claro, peso alto e relevo interno sutil; hover clareia texto e superfície. Em mobile, o rail vira cabeçalho e elementos secundários desaparecem antes que a navegação seja comprimida.
+O rail usa branco e lavanda sobre violeta profundo. A opção ativa recebe uma superfície branca translúcida e peso alto; hover clareia texto e superfície. Em mobile, o rail vira cabeçalho e elementos secundários desaparecem antes que a navegação seja comprimida.
 
 ### Metric Card
 
-Cada métrica combina ícone em bloco tonal, número forte tabular e rótulo curto. Uma forma curva suave no canto inferior adiciona identidade sem competir com o dado. O tom semântico varia, mas estrutura, espaçamento e contraste permanecem constantes.
+Cada métrica ocupa uma célula de uma faixa única, combinando ícone tonal compacto, número tabular e rótulo curto. Divisões verticais substituem cartões independentes; o tom semântico varia sem alterar a estrutura.
 
 ### Client Action Grid
 
-A grade de ações usa botões compactos, igualmente distribuídos e com ícone acima do rótulo. A ação de acesso é a única ação preenchida e se estende para formar uma saída visual clara; no mobile, ela ocupa a largura total da grade.
+A grade de ações usa uma faixa de fundo neutro e botões sem contorno, com ícone ao lado do rótulo. A ação de acesso é a única preenchida; no mobile, ela ocupa a largura total da grade.
 
 ## Do's and Don'ts
 
@@ -251,7 +248,7 @@ A grade de ações usa botões compactos, igualmente distribuídos e com ícone 
 
 - **Do** mantenha o rail violeta e a coroa laranja como âncoras reconhecíveis do ControlaÊ.
 - **Do** agrupe ações por estabelecimento e preserve separadores claros entre identidade, cobrança e operação.
-- **Do** use superfícies translúcidas sobre o canvas lilás somente quando texto e bordas mantiverem contraste.
+- **Do** use bordas e alinhamento antes de recorrer a sombra ou superfície adicional.
 - **Do** apresente estados críticos com texto, cor e, quando útil, ícone.
 - **Do** empilhe conteúdo responsivamente e preserve alvos de toque confortáveis.
 - **Do** mantenha foco visível, placeholders legíveis e suporte a movimento reduzido.
