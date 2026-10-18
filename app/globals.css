@@ -238,7 +238,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .brand-login-slogan { margin-top: 3px; color: rgba(255,255,255,.82); font-size: 10px; }
 .branding-footer { padding-top: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); }
 .branding-footer :where(.primary-button, .secondary-button) { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
-.edit-establishment-form { padding: 14px 16px 16px; gap: 14px; border-radius: 0 0 16px 16px; background: #fcfbff; }
+.edit-establishment-form { padding: 14px 16px 16px; gap: 14px; grid-template-columns: minmax(0,1180px); justify-content: center; border-radius: 0 0 16px 16px; background: #fcfbff; }
 .edit-form-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .edit-form-title { min-width: 0; display: flex; align-items: center; gap: 10px; }
 .edit-form-title-icon { width: 34px; height: 34px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 10px; color: #6732d7; background: #eee9ff; }
@@ -253,13 +253,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .edit-section-heading h5 { margin: 0; color: #282c4d; font-size: 12px; font-weight: 790; }
 .edit-section-heading p { margin: 2px 0 0; color: #777c99; font-size: 10px; line-height: 1.35; }
 .edit-fields { display: grid; gap: 10px; }
-.edit-fields--identity { grid-template-columns: 1.05fr 1.05fr .9fr 1.3fr .8fr; }
+.edit-fields--identity { grid-template-columns: minmax(170px,1fr) minmax(180px,1fr) minmax(160px,.85fr) minmax(220px,1.35fr) minmax(150px,.75fr); }
 .edit-establishment-form .field > span { font-size: 11px; }
 .edit-establishment-form .field :where(input, select) { height: 38px; margin-top: 5px; padding: 0 11px; border-radius: 9px; font-size: 13px; }
 .edit-establishment-form .password-field { height: 38px; margin-top: 5px; border-radius: 9px; }
-.edit-section-pair { padding-top: 14px; display: grid; grid-template-columns: minmax(0,1.5fr) minmax(280px,.75fr); gap: 16px; border-top: 1px solid #e9e8f3; }
+.edit-section-pair { max-width: 1100px; padding-top: 14px; display: grid; grid-template-columns: minmax(0,2fr) minmax(280px,1fr); gap: 18px; border-top: 1px solid #e9e8f3; }
 .edit-section--database { padding-left: 16px; border-left: 1px solid #e9e8f3; }
-.policy-toggle { position: relative; padding: 10px 12px; display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 10px; border: 1px solid #dddcec; border-radius: 10px; background: #fff; cursor: pointer; }
+.policy-toggle { position: relative; width: min(100%,620px); padding: 10px 12px; display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 10px; border: 1px solid #dddcec; border-radius: 10px; background: #fff; cursor: pointer; }
 .policy-toggle input { position: absolute; opacity: 0; pointer-events: none; }
 .policy-switch { width: 42px; height: 24px; padding: 3px; display: flex; align-items: center; border-radius: 999px; background: #c9cad8; transition: background .18s ease; }
 .policy-switch > span { width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 2px 5px rgba(35,31,69,.2); transition: transform .18s ease; }
@@ -270,15 +270,15 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .policy-copy strong { color: #292d4d; font-size: 11px; }
 .policy-copy small { color: #737895; font-size: 10px; line-height: 1.35; }
 .location-heading { display: flex; align-items: center; gap: 6px; color: #555c7f; font-size: 10px; font-weight: 760; text-transform: uppercase; letter-spacing: .045em; }
-.edit-fields--location { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.edit-fields--location { width: min(100%,650px); grid-template-columns: repeat(3, minmax(0,1fr)); }
 .edit-section-note { margin: -3px 0 0; color: #7a7f9c; font-size: 9px; line-height: 1.35; }
 .database-warning { padding: 9px 10px; display: flex; align-items: flex-start; gap: 7px; border: 1px solid #f0ddb4; border-radius: 9px; color: #795615; background: #fff9eb; font-size: 10px; line-height: 1.4; }
 .database-warning svg { margin-top: 1px; flex: 0 0 auto; }
-.edit-form-footer { padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border-top: 1px solid #e9e8f3; }
+.edit-form-footer { max-width: 880px; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid #e9e8f3; }
 .edit-form-footer > p { margin: 0; color: #777c99; font-size: 10px; }
 .edit-form-footer .form-actions { grid-column: auto; flex: 0 0 auto; }
 .edit-form-footer :where(.primary-button, .secondary-button) { min-height: 40px; padding-inline: 16px; }
-.edit-establishment-form .danger-zone { margin-top: 0; padding: 12px 14px; gap: 14px; border-radius: 11px; }
+.edit-establishment-form .danger-zone { width: min(100%,880px); margin-top: 0; padding: 12px 14px; display: grid; grid-template-columns: minmax(0,560px) auto; justify-content: start; gap: 22px; border-radius: 11px; }
 .edit-establishment-form .danger-zone strong { font-size: 12px; }
 .edit-establishment-form .danger-zone p { margin-top: 3px; font-size: 10px; line-height: 1.4; }
 .edit-establishment-form .danger-button { min-height: 38px; padding: 0 13px; font-size: 11px; }
