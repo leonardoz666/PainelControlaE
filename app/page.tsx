@@ -8,7 +8,6 @@ import {
   Building2,
   Blocks,
   Check,
-  ChevronDown,
   CircleDollarSign,
   Crown,
   History,
@@ -36,6 +35,7 @@ import {
   normalizeOperationalBaseUrl,
 } from "@/app/lib/operational-url";
 import { Field, FormActions } from "@/app/components/dashboard/FormControls";
+import { StatusSelect } from "@/app/components/dashboard/StatusSelect";
 import type { Establishment, Status, Summary } from "@/app/components/dashboard/types";
 
 const AuditHistory = dynamic(() => import("@/app/components/AuditHistory").then((module) => module.AuditHistory));
@@ -475,17 +475,12 @@ export default function DashboardPage() {
 
                     <div className="client-status">
                       <small>Situação</small>
-                      <label className="status-select">
-                        <span className="sr-only">Situação de {item.nome}</span>
-                        <select name={`status-${item.id}`} value={item.status} onChange={(event) => void changeStatus(item, event.target.value as Status)}>
-                          <option value="TESTE">Em teste</option>
-                          <option value="ATIVO" disabled={!item.bancoPronto || !item.donoPronto}>Ativo</option>
-                          <option value="INADIMPLENTE">Inadimplente</option>
-                          <option value="SUSPENSO">Suspenso</option>
-                          <option value="CANCELADO">Cancelado</option>
-                        </select>
-                        <ChevronDown size={15} aria-hidden="true" />
-                      </label>
+                      <StatusSelect
+                        name={item.nome}
+                        value={item.status}
+                        canActivate={item.bancoPronto && item.donoPronto}
+                        onChange={(status) => void changeStatus(item, status)}
+                      />
                     </div>
 
                     <div className="client-actions">
