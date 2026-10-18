@@ -114,17 +114,17 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .search-field input { min-width: 0; flex: 1; border: 0; outline: 0; color: #232746; background: transparent; font-size: 13px; }
 .search-field input::placeholder { color: #686e8a; }
 .clients-list { display: grid; }
-.client-card { position: relative; padding: 12px 16px; display: grid; grid-template-columns: minmax(340px,1fr) 170px 170px minmax(500px,1.15fr); align-items: center; column-gap: 0; row-gap: 11px; border-bottom: 1px solid var(--line); background: #fff; }
+.client-card { position: relative; padding: 12px 16px; display: grid; grid-template-columns: minmax(480px,1.1fr) 160px 160px minmax(500px,1.15fr); align-items: center; column-gap: 0; row-gap: 11px; border-bottom: 1px solid var(--line); background: #fff; }
 .client-card:last-child { border-bottom: 0; }
-.client-main { min-width: 0; padding-right: 20px; display: flex; align-items: center; gap: 14px; }
-.client-logo { width: 48px; height: 48px; flex: 0 0 auto; border-radius: 11px; }
+.client-main { min-width: 0; padding-right: 20px; display: grid; grid-template-columns: 56px minmax(150px,1fr) max-content; align-items: center; gap: 14px; }
+.client-logo { width: 56px; height: 56px; flex: 0 0 auto; border-radius: 12px; }
 .client-identity { min-width: 0; }
 .client-title-line { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
-.client-title-line h3 { margin: 0; overflow: hidden; text-overflow: ellipsis; color: var(--ink); font-size: 16px; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
-.client-slug { width: fit-content; max-width: 100%; margin-top: 3px; display: flex; align-items: center; gap: 5px; overflow: hidden; color: #6a7096; font-size: 12px; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
+.client-title-line h3 { margin: 0; overflow: hidden; text-overflow: ellipsis; color: var(--ink); font-size: 18px; font-weight: 800; letter-spacing: -.025em; white-space: nowrap; }
+.client-slug { width: fit-content; max-width: 100%; margin-top: 5px; display: flex; align-items: center; gap: 5px; overflow: hidden; color: #6a7096; font-size: 12px; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
 .client-slug:hover { color: var(--violet-700); text-decoration: underline; text-underline-offset: 3px; }
-.readiness-list { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 4px; }
-.readiness-list span { min-height: 20px; padding: 2px 7px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid currentColor; border-radius: 999px; font-size: 9px; font-weight: 720; }
+.readiness-list { display: grid; grid-template-columns: repeat(2,max-content); gap: 5px; }
+.readiness-list span { min-height: 22px; padding: 2px 8px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; border: 1px solid currentColor; border-radius: 999px; font-size: 9px; font-weight: 720; white-space: nowrap; }
 .readiness-list .ready { color: #684bb8; background: #faf9ff; }
 .readiness-list .protected { color: #356a9f; background: #f8fbff; }
 .readiness-list .waiting { color: #8b681d; background: #fffcf5; }
@@ -398,7 +398,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .login-submit:disabled { cursor: not-allowed; opacity: .58; transform: none; }
 
 @media (max-width: 1600px) {
-  .client-card { grid-template-columns: minmax(300px,.9fr) 150px 150px minmax(440px,1.2fr); }
+  .client-card { grid-template-columns: minmax(430px,1fr) 150px 150px minmax(440px,1.05fr); }
 }
 @media (max-width: 1200px) {
   .client-card { padding-bottom: 0; grid-template-columns: minmax(300px,1fr) 170px 150px; }
@@ -442,7 +442,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   .search-field { width: 100%; }
   .client-card { grid-template-columns: 1fr 1fr; padding: 14px 14px 0; }
   .client-main { grid-column: 1 / -1; padding-right: 0; }
-  .client-logo { width: 48px; height: 48px; }
+  .client-logo { width: 56px; height: 56px; }
   .billing-summary { padding: 11px 12px 11px 0; border: 0; border-top: 1px solid #e7e7f4; }
   .client-status { padding: 11px 0 11px 14px; border-top: 1px solid #e7e7f4; }
   .client-actions { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -475,7 +475,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   .metric-card:last-child { grid-column: 1 / -1; }
   .metric-value { font-size: 21px; }
   .metric-label { font-size: 11px; }
-  .client-main { align-items: flex-start; }
+  .client-main { grid-template-columns: 52px minmax(0,1fr); align-items: center; gap: 12px; }
+  .client-logo { width: 52px; height: 52px; }
+  .readiness-list { grid-column: 2; grid-template-columns: repeat(2,max-content); margin-top: 2px; }
   .client-title-line h3 { white-space: normal; }
   .client-card { grid-template-columns: 1fr; }
   .billing-summary, .client-status { grid-column: 1; }

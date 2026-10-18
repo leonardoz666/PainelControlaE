@@ -456,12 +456,12 @@ export default function DashboardPage() {
                         <a href={establishmentLoginUrl(operationalBase, item.slug)} target="_blank" rel="noreferrer" className="client-slug">
                           {item.slug}<ExternalLink size={13} aria-hidden="true" />
                         </a>
-                        <div className="readiness-list">
-                          <span className={item.bancoPronto ? "ready" : "waiting"}>{item.bancoPronto ? "Banco pronto" : "Banco pendente"}</span>
-                          <span className="ready">Link pronto</span>
-                          <span className={item.donoPronto ? "ready" : "waiting"}>{item.donoPronto ? "Dono criado" : "Dono pendente"}</span>
-                          <span className={item.impressaoConfigurada ? "protected" : "waiting"}><ShieldCheck size={13} aria-hidden="true" />{item.impressaoConfigurada ? "Impressão protegida" : "Impressão pendente"}</span>
-                        </div>
+                      </div>
+                      <div className="readiness-list" aria-label="Preparação do estabelecimento">
+                        <span className={item.bancoPronto ? "ready" : "waiting"}>{item.bancoPronto ? "Banco pronto" : "Banco pendente"}</span>
+                        <span className={item.donoPronto ? "ready" : "waiting"}>{item.donoPronto ? "Dono criado" : "Dono pendente"}</span>
+                        <span className="ready">Link pronto</span>
+                        <span className={item.impressaoConfigurada ? "protected" : "waiting"}><ShieldCheck size={13} aria-hidden="true" />{item.impressaoConfigurada ? "Impressão protegida" : "Impressão pendente"}</span>
                       </div>
                     </div>
 
