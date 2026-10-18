@@ -100,7 +100,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .search-field input { min-width: 0; flex: 1; border: 0; outline: 0; color: #232746; background: transparent; font-size: 13px; }
 .search-field input::placeholder { color: #686e8a; }
 .clients-list { display: grid; }
-.client-card { padding: 12px 16px 0; display: grid; grid-template-columns: minmax(360px,1.25fr) minmax(180px,.42fr) minmax(150px,.36fr); align-items: center; column-gap: 0; row-gap: 11px; border-bottom: 1px solid var(--line); background: #fff; }
+.client-card { padding: 12px 16px; display: grid; grid-template-columns: minmax(340px,1fr) 170px 170px minmax(500px,1.15fr); align-items: center; column-gap: 0; row-gap: 11px; border-bottom: 1px solid var(--line); background: #fff; }
 .client-card:last-child { border-bottom: 0; }
 .client-main { min-width: 0; padding-right: 20px; display: flex; align-items: center; gap: 14px; }
 .client-logo { width: 48px; height: 48px; flex: 0 0 auto; border-radius: 11px; }
@@ -123,8 +123,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .status-select { position: relative; min-width: 0; }
 .status-select select { width: 100%; height: 34px; padding: 0 28px 0 10px; appearance: none; border: 1px solid #dcdbe4; border-radius: 8px; color: #38354d; background: white; font-size: 11px; font-weight: 680; cursor: pointer; }
 .status-select svg { position: absolute; top: 10px; right: 9px; pointer-events: none; color: #747184; }
-.client-actions { min-width: 0; grid-column: 1 / -1; margin: 0 -16px; padding: 6px 16px; display: grid; grid-template-columns: repeat(8, minmax(0,1fr)); gap: 3px; border-top: 1px solid var(--line); background: #fafafd; }
-.client-actions button { min-width: 0; min-height: 36px; padding: 0 8px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 7px; color: #55516a; background: transparent; font-size: 10px; font-weight: 690; line-height: 1.18; text-align: center; white-space: nowrap; cursor: pointer; transition: color .16s ease, background .16s ease, transform .16s ease; }
+.client-actions { min-width: 0; grid-column: 4; grid-row: 1; padding-left: 14px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 3px; border-left: 1px solid var(--line); }
+.client-actions button { min-width: 0; min-height: 34px; padding: 0 7px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 7px; color: #55516a; background: transparent; font-size: 9px; font-weight: 690; line-height: 1.18; text-align: center; white-space: nowrap; cursor: pointer; transition: color .16s ease, background .16s ease, transform .16s ease; }
 .client-actions button svg { width: 17px; height: 17px; }
 .client-actions button svg { flex: 0 0 auto; }
 .client-actions button:hover { transform: translateY(-1px); color: #5132b3; background: #f0edfb; }
@@ -133,7 +133,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .client-actions .access-button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .client-actions .access-button svg:last-child { margin-left: auto; }
 .client-actions .access-button:hover { color: white; background: var(--primary-hover); }
-.token-banner, .inline-form { grid-column: 1 / -1; margin: 0 -18px; padding: 16px 18px; border-top: 1px solid var(--line); }
+.token-banner, .inline-form { grid-column: 1 / -1; margin: 0 -16px -12px; padding: 16px; border-top: 1px solid var(--line); }
 .token-banner { color: #774d0d; background: #fff9ea; border-radius: 12px; font-size: 12px; }
 .token-banner code { margin-top: 8px; padding: 9px 10px; display: block; overflow-wrap: anywhere; border-radius: 8px; color: #4f390f; background: white; font-family: "Manrope Variable", "Segoe UI", sans-serif; font-variant-numeric: tabular-nums; letter-spacing: .025em; }
 .token-banner .token-label { display: block; margin-top: 12px; color: #7a5614; font-size: 11px; font-weight: 760; }
@@ -302,10 +302,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .login-submit:disabled { cursor: not-allowed; opacity: .58; transform: none; }
 
 @media (max-width: 1600px) {
-  .client-card { grid-template-columns: minmax(320px,1.15fr) minmax(170px,.42fr) minmax(145px,.36fr); }
+  .client-card { grid-template-columns: minmax(300px,.9fr) 150px 150px minmax(440px,1.2fr); }
 }
 @media (max-width: 1200px) {
-  .client-actions { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .client-card { padding-bottom: 0; grid-template-columns: minmax(300px,1fr) 170px 150px; }
+  .client-actions { grid-column: 1 / -1; grid-row: auto; margin: 0 -16px; padding: 6px 16px; grid-template-columns: repeat(4, minmax(0,1fr)); border-top: 1px solid var(--line); border-left: 0; background: #fafafd; }
   .edit-fields--identity { grid-template-columns: repeat(3, minmax(0,1fr)); }
 }
 @media (max-width: 980px) {

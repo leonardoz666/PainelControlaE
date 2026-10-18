@@ -240,7 +240,7 @@ Cada métrica ocupa uma célula de uma faixa única, combinando ícone tonal com
 
 ### Client Action Grid
 
-Cada registro distribui estabelecimento, mensalidade e situação em três faixas proporcionais, separadas por linhas finas. A grade de ações usa uma faixa de fundo neutro e botões sem contorno, com ícone ao lado do rótulo. A ação de acesso é a única preenchida; no mobile, ela ocupa a largura total da grade.
+Em telas largas, cada registro mantém estabelecimento, mensalidade e situação compactos à esquerda e usa o espaço restante para uma grade de ações 4 × 2. Em larguras intermediárias, as ações descem para uma faixa neutra; no mobile, reorganizam-se em duas colunas e a ação de acesso ocupa a largura total. Os botões não têm contorno e usam ícone ao lado do rótulo; somente a ação de acesso é preenchida.
 
 ## Do's and Don'ts
 
