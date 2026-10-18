@@ -13,11 +13,12 @@ export function normalizeOperationalBaseUrl(configuredValue: string | undefined)
 }
 
 export function establishmentLoginUrl(operationalBase: string, slug: string): string {
-  const url = new URL("/login", `${operationalBase}/`);
-  url.searchParams.set("estabelecimento", slug);
-  return url.toString();
+  return new URL(`/e/${encodeURIComponent(slug)}/login`, `${operationalBase}/`).toString();
 }
 
 export function establishmentInstallationUrl(operationalBase: string, slug: string): string {
-  return new URL(`/e/${encodeURIComponent(slug)}`, `${operationalBase}/`).toString();
+  const establishmentUrl = new URL(`/e/${encodeURIComponent(slug)}`, `${operationalBase}/`).toString();
+  const activationUrl = new URL('/instalacao', `${operationalBase}/`);
+  activationUrl.searchParams.set('link', establishmentUrl);
+  return activationUrl.toString();
 }

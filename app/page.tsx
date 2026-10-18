@@ -362,7 +362,7 @@ export default function DashboardPage() {
       const result = await api<{ code: string }>(`/estabelecimentos/${item.id}/aplicativo/codigo`, { method: "POST" });
       const establishmentUrl = establishmentInstallationUrl(operationalBase, item.slug);
       setInstallationCode({ id: item.id, value: result.code, establishmentUrl });
-      const copied = await navigator.clipboard.writeText(`Link do estabelecimento: ${establishmentUrl}\nCódigo de ativação: ${result.code}`).then(() => true).catch(() => false);
+      const copied = await navigator.clipboard.writeText(`Link exclusivo de ativação do dono: ${establishmentUrl}\nCódigo de ativação: ${result.code}\n\nDepois de ativar, a equipe entra por: ${establishmentLoginUrl(operationalBase, item.slug)}`).then(() => true).catch(() => false);
       setAnnouncement(copied ? "Dados de instalação gerados e copiados." : "Dados de instalação gerados. Copie-os no painel.");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Falha ao gerar código de ativação");
@@ -660,10 +660,12 @@ export default function DashboardPage() {
                     {installationCode?.id === item.id && (
                       <div className="token-banner">
                         <strong>Dados para ativar o aplicativo. O código é válido por 15 minutos.</strong>
-                        <span className="token-label">Link do estabelecimento</span>
+                        <span className="token-label">Link exclusivo de ativação do dono</span>
                         <code>{installationCode.establishmentUrl}</code>
                         <span className="token-label">Código de ativação</span>
                         <code>{installationCode.value}</code>
+                        <span className="token-label">Link operacional da equipe</span>
+                        <code>{establishmentLoginUrl(operationalBase, item.slug)}</code>
                       </div>
                     )}
 
