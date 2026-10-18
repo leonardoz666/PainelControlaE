@@ -175,11 +175,11 @@ A paleta contrapõe violetas reais e profundos a uma base fria, luminosa e quase
 
 No desktop, o shell reserva um rail fixo de 220px e entrega o restante a um canvas fluido. O conteúdo central tem largura máxima de 1440px e respiro de página de 28–32px. Cabeçalho, resumo e clientes compartilham o mesmo eixo. O resumo forma uma faixa contínua de cinco células; clientes formam registros separados por linhas, com identidade, cobrança e ações em zonas previsíveis.
 
-A interface usa escala global de 1.1 para que o tamanho padrão do navegador tenha a mesma presença visual de 110% de zoom. Breakpoints e container queries continuam responsáveis por reorganizar o conteúdo quando o espaço útil diminui.
+A interface usa escala global de 1.1 para que o tamanho padrão do navegador tenha a mesma presença visual de 110% de zoom. Alturas baseadas no viewport são compensadas pelo inverso da escala, e os breakpoints de viewport avançam na mesma proporção; assim login, navegação fixa e diálogos preservam integralmente o conteúdo que seria visível com zoom real. Container queries continuam responsáveis por reorganizar os blocos conforme o espaço útil.
 
 O ritmo usa intervalos compactos de 7–14px dentro de controles e grupos, 18–24px entre blocos internos e 25–34px entre seções. Isso mantém as ações densas sem parecerem apertadas. As métricas formam cinco colunas no desktop, três em telas intermediárias e duas no mobile; cartões de clientes quebram de três zonas para duas e finalmente para uma coluna.
 
-Abaixo de 980px, o rail torna-se um cabeçalho de altura natural e a navegação perde elementos não essenciais. Abaixo de 720px, cabeçalhos, busca, formulários, cobrança e ações empilham; abaixo de 430px, a prioridade passa a ser nome, estado e próxima ação. Nenhuma ação pode depender de hover, e alvos interativos importantes preservam cerca de 44–48px de altura.
+Abaixo do equivalente visual a 980px, o rail torna-se um cabeçalho de altura natural e a navegação perde elementos não essenciais. Abaixo do equivalente a 720px, cabeçalhos, busca, formulários, cobrança e ações empilham; abaixo do equivalente a 430px, a prioridade passa a ser nome, estado e próxima ação. Em celulares de até 360px visuais, as opções da navegação superior empilham para permanecerem integralmente visíveis. Nenhuma ação pode depender de hover, e alvos interativos importantes preservam cerca de 44–48px de altura.
 
 **The Scan Lane Rule.** Identidade, situação financeira e ações ocupam zonas previsíveis; não misture controles entre essas faixas no desktop.
 
