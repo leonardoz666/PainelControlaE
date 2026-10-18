@@ -51,21 +51,6 @@ function optionalNumber(form: FormData, name: string): number | null {
 }
 
 
-const STATUS_LABEL: Record<Status, string> = {
-  TESTE: "Em teste",
-  ATIVO: "Ativo",
-  INADIMPLENTE: "Inadimplente",
-  SUSPENSO: "Suspenso",
-  CANCELADO: "Cancelado",
-};
-const STATUS_STYLE: Record<Status, string> = {
-  TESTE: "bg-blue-50 text-blue-700",
-  ATIVO: "bg-emerald-50 text-emerald-700",
-  INADIMPLENTE: "bg-amber-50 text-amber-800",
-  SUSPENSO: "bg-red-50 text-red-700",
-  CANCELADO: "bg-slate-200 text-slate-700",
-};
-
 function Metric({
   label,
   value,
@@ -545,7 +530,6 @@ export default function DashboardPage() {
                       <div className="client-identity">
                         <div className="client-title-line">
                           <h3>{item.nome}</h3>
-                          <span className={`status-pill ${STATUS_STYLE[item.status]}`}><span />{STATUS_LABEL[item.status]}</span>
                         </div>
                         <a href={establishmentLoginUrl(operationalBase, item.slug)} target="_blank" rel="noreferrer" className="client-slug">
                           {item.slug}<ExternalLink size={13} aria-hidden="true" />
@@ -560,11 +544,15 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="billing-summary">
-                      <span className="billing-icon"><CircleDollarSign size={20} /></span>
+                      <span className="billing-icon"><CircleDollarSign size={18} aria-hidden="true" /></span>
                       <div>
                         <small>Mensalidade</small>
                         <strong>{Number(item.assinatura?.valorMensal ?? 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong>
                       </div>
+                    </div>
+
+                    <div className="client-status">
+                      <small>Situação</small>
                       <label className="status-select">
                         <span className="sr-only">Situação de {item.nome}</span>
                         <select value={item.status} onChange={(event) => void changeStatus(item, event.target.value as Status)}>

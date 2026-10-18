@@ -222,7 +222,7 @@ Bordas são claras, finas e frias. O canvas permanece uniforme; o conteúdo usa 
 - **Background:** branco opaco em painéis e registros operacionais.
 - **Shadow Strategy:** use apenas Panel Rest em contêineres agregadores; filhos são planos.
 - **Border:** linha fria de 1px separa regiões e registros.
-- **Internal Padding:** 16–20px em registros e formulários.
+- **Internal Padding:** 12–16px em registros operacionais; 16–20px em formulários.
 
 ### Inputs / Fields
 
@@ -240,7 +240,7 @@ Cada métrica ocupa uma célula de uma faixa única, combinando ícone tonal com
 
 ### Client Action Grid
 
-A grade de ações usa uma faixa de fundo neutro e botões sem contorno, com ícone ao lado do rótulo. A ação de acesso é a única preenchida; no mobile, ela ocupa a largura total da grade.
+Cada registro distribui estabelecimento, mensalidade e situação em três faixas proporcionais, separadas por linhas finas. A grade de ações usa uma faixa de fundo neutro e botões sem contorno, com ícone ao lado do rótulo. A ação de acesso é a única preenchida; no mobile, ela ocupa a largura total da grade.
 
 ## Do's and Don'ts
 
