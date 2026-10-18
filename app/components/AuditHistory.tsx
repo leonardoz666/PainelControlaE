@@ -95,7 +95,7 @@ function establishmentName(entry: AuditEntry): string {
 
 function AuditIcon({ action }: { action: string }) {
   const Icon = ACTION_DEFINITIONS[action]?.icon ?? KeyRound;
-  return <Icon size={19} />;
+  return <Icon size={19} aria-hidden="true" />;
 }
 
 export function AuditHistory() {
@@ -142,19 +142,19 @@ export function AuditHistory() {
         </div>
         <div className="audit-controls">
           <form className="audit-search" onSubmit={submitSearch}>
-            <Search size={18} />
+            <Search size={18} aria-hidden="true" />
             <label className="sr-only" htmlFor="audit-search">Buscar no histórico</label>
-            <input id="audit-search" name="busca-historico" autoComplete="off" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Cliente, usuário ou ação…" />
+            <input id="audit-search" type="search" name="busca-historico" autoComplete="off" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Cliente, usuário ou ação…" />
             <button type="submit">Buscar</button>
           </form>
           <label className="audit-filter">
             <span className="sr-only">Filtrar por ação</span>
-            <select value={action} onChange={(event) => { setAction(event.target.value); setPage(1); }}>
+            <select name="acao-auditoria" autoComplete="off" value={action} onChange={(event) => { setAction(event.target.value); setPage(1); }}>
               {ACTIONS.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
             </select>
           </label>
           <button type="button" onClick={() => void load()} disabled={loading} className="refresh-button" aria-label="Atualizar histórico">
-            <RefreshCw size={19} className={loading ? "animate-spin" : ""} />
+            <RefreshCw size={19} className={loading ? "animate-spin" : ""} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -162,12 +162,12 @@ export function AuditHistory() {
       {error ? <div className="audit-error" role="alert">{error}<button type="button" onClick={() => void load()}>Tentar novamente</button></div> : null}
 
       {loading ? (
-        <div className="audit-loading" aria-label="Carregando histórico">
+        <div className="audit-loading" role="status" aria-label="Carregando histórico">
           {[1, 2, 3, 4].map((item) => <div key={item} className="audit-skeleton" />)}
         </div>
       ) : entries.length === 0 ? (
         <div className="empty-state">
-          <Activity size={42} />
+          <Activity size={42} aria-hidden="true" />
           <h3>Nenhuma atividade encontrada</h3>
           <p>Altere os filtros ou realize uma ação no painel.</p>
         </div>
@@ -196,8 +196,8 @@ export function AuditHistory() {
       <div className="audit-pagination" aria-label="Paginação do histórico">
         <span>Página {pagination.page} de {pagination.pages}</span>
         <div>
-          <button type="button" onClick={() => setPage((value) => Math.max(1, value - 1))} disabled={page <= 1 || loading} aria-label="Página anterior"><ChevronLeft size={18} /></button>
-          <button type="button" onClick={() => setPage((value) => Math.min(pagination.pages, value + 1))} disabled={page >= pagination.pages || loading} aria-label="Próxima página"><ChevronRight size={18} /></button>
+          <button type="button" onClick={() => setPage((value) => Math.max(1, value - 1))} disabled={page <= 1 || loading} aria-label="Página anterior"><ChevronLeft size={18} aria-hidden="true" /></button>
+          <button type="button" onClick={() => setPage((value) => Math.min(pagination.pages, value + 1))} disabled={page >= pagination.pages || loading} aria-label="Próxima página"><ChevronRight size={18} aria-hidden="true" /></button>
         </div>
       </div>
     </section>

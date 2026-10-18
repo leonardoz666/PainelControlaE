@@ -49,16 +49,16 @@ export default function LoginPage() {
           <p>Use sua credencial administrativa. Acessos dos restaurantes entram pelo link de cada estabelecimento.</p>
 
           <label className="login-label" htmlFor="email">E-mail</label>
-          <input id="email" type="email" autoComplete="username" spellCheck={false} required value={email} onChange={event => setEmail(event.target.value)} className="login-input" />
+          <input id="email" name="email" type="email" autoComplete="username" spellCheck={false} required value={email} onChange={event => setEmail(event.target.value)} className="login-input" />
 
           <label className="login-label" htmlFor="senha">Senha</label>
           <div className="login-password">
-            <input id="senha" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required value={senha} onChange={event => setSenha(event.target.value)} className="login-input" />
+            <input id="senha" name="senha" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required value={senha} onChange={event => setSenha(event.target.value)} className="login-input" />
             <button type="button" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}>{showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}</button>
           </div>
 
           {error && <p role="alert" aria-live="polite" className="login-error">{error}</p>}
-          <button disabled={loading} className="login-submit">
+          <button type="submit" disabled={loading} className="login-submit">
             {loading && <LoaderCircle size={18} className="animate-spin" aria-hidden="true" />}
             {loading ? 'Entrando…' : 'Entrar'}
           </button>

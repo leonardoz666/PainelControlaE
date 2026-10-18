@@ -67,7 +67,7 @@ function Metric({
       <span className="metric-icon">
         <Icon size={19} aria-hidden="true" />
       </span>
-      <div className="relative z-10 min-w-0">
+      <div className="metric-copy">
         <p className="metric-value">{value}</p>
         <p className="metric-label">{label}</p>
       </div>
@@ -401,7 +401,7 @@ export default function DashboardPage() {
       <a href="#main-content" className="skip-link">Pular para o conteúdo</a>
       <aside className="ceo-sidebar">
         <div className="sidebar-brand">
-          <span className="brand-mark"><Crown size={25} strokeWidth={2.1} /></span>
+          <span className="brand-mark"><Crown size={25} strokeWidth={2.1} aria-hidden="true" /></span>
           <div>
             <p className="brand-name">ControlaÊ</p>
             <p className="brand-caption">Painel CEO</p>
@@ -410,19 +410,19 @@ export default function DashboardPage() {
 
         <nav className="sidebar-nav" aria-label="Navegação principal">
           <button type="button" onClick={() => setActiveView("establishments")} className={`sidebar-nav-item ${activeView === "establishments" ? "sidebar-nav-item--active" : ""}`} aria-current={activeView === "establishments" ? "page" : undefined}>
-            <Building2 size={20} /> Estabelecimentos
+            <Building2 size={20} aria-hidden="true" /> Estabelecimentos
           </button>
           <button type="button" onClick={() => setActiveView("history")} className={`sidebar-nav-item ${activeView === "history" ? "sidebar-nav-item--active" : ""}`} aria-current={activeView === "history" ? "page" : undefined}>
-            <History size={20} /> Histórico
+            <History size={20} aria-hidden="true" /> Histórico
           </button>
         </nav>
 
-        <button onClick={() => void logout()} className="sidebar-logout">
+        <button type="button" onClick={() => void logout()} className="sidebar-logout">
           <LogOut size={19} aria-hidden="true" /> <span>Sair</span>
         </button>
 
         <div className="sidebar-footer">
-          <span className="sidebar-footer-icon"><Crown size={18} /></span>
+          <span className="sidebar-footer-icon"><Crown size={18} aria-hidden="true" /></span>
           <div><strong>ControlaÊ</strong><small>v1.0.0</small></div>
         </div>
       </aside>
@@ -436,20 +436,20 @@ export default function DashboardPage() {
               <p>{activeView === "establishments" ? "Controle clientes, disponibilidade e acessos sem misturar os dados operacionais." : "Acompanhe todas as ações administrativas realizadas na plataforma."}</p>
             </div>
             {activeView === "establishments" && <div className="header-actions">
-              <button onClick={() => void load()} disabled={loading} aria-label="Atualizar dados" className="refresh-button">
-                <RefreshCw size={20} className={loading ? "animate-spin" : ""} />
+              <button type="button" onClick={() => void load()} disabled={loading} aria-label="Atualizar dados" className="refresh-button">
+                <RefreshCw size={20} className={loading ? "animate-spin" : ""} aria-hidden="true" />
               </button>
-              <button onClick={() => setShowCreate((value) => !value)} className="primary-button">
-                <Plus size={20} /> Novo estabelecimento
+              <button type="button" onClick={() => setShowCreate((value) => !value)} className="primary-button">
+                <Plus size={20} aria-hidden="true" /> Novo estabelecimento
               </button>
             </div>}
           </header>
 
           {error && (
             <div role="alert" className="error-banner">
-              <TriangleAlert size={19} />
+              <TriangleAlert size={19} aria-hidden="true" />
               <span>{error}</span>
-              <button onClick={() => setError("")}>Fechar</button>
+              <button type="button" onClick={() => setError("")}>Fechar</button>
             </div>
           )}
 
@@ -480,9 +480,9 @@ export default function DashboardPage() {
                 <Field name="garcomLatitude" label="Latitude para login de garçons" type="number" placeholder="-12.000000" />
                 <Field name="garcomLongitude" label="Longitude para login de garçons" type="number" placeholder="-38.000000" />
                 <Field name="garcomRaioMetros" label="Raio permitido (metros)" type="number" placeholder="50" hint="Deixe os três campos vazios para não restringir o login por localização." />
-                <label className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <input name="exigirVinculoGarcom" type="checkbox" className="mt-1 h-4 w-4 accent-violet-600" />
-                  <span><strong className="block text-sm text-slate-900">Exigir celular autorizado para garçons</strong><span className="mt-1 block text-xs leading-5 text-slate-600">Quando ativo, cada garçom precisa abrir uma vez o convite individual gerado na tela de usuários.</span></span>
+                <label className="create-policy">
+                  <input name="exigirVinculoGarcom" type="checkbox" />
+                  <span><strong>Exigir celular autorizado para garçons</strong><small>Quando ativo, cada garçom precisa abrir uma vez o convite individual gerado na tela de usuários.</small></span>
                 </label>
                 <Field name="valorMensal" label="Mensalidade" type="number" placeholder="0,00" />
                 <Field name="proximoVencimento" label="Próximo vencimento" type="date" />
@@ -506,18 +506,18 @@ export default function DashboardPage() {
             </div>
 
             {loading ? (
-              <div className="loading-list" aria-label="Carregando estabelecimentos">
+              <div className="loading-list" role="status" aria-label="Carregando estabelecimentos">
                 {[1, 2, 3].map((item) => <div key={item} className="client-skeleton" />)}
               </div>
             ) : items.length === 0 ? (
               <div className="empty-state">
-                <Building2 size={42} />
+                <Building2 size={42} aria-hidden="true" />
                 <h3>Nenhum estabelecimento cadastrado</h3>
                 <p>Cadastre o primeiro cliente para gerar seu link de acesso.</p>
               </div>
             ) : visibleItems.length === 0 ? (
               <div className="empty-state">
-                <Search size={38} />
+                <Search size={38} aria-hidden="true" />
                 <h3>Nenhum resultado</h3>
                 <p>Tente buscar pelo nome, link, e-mail ou telefone.</p>
               </div>
@@ -538,7 +538,7 @@ export default function DashboardPage() {
                           <span className={item.bancoPronto ? "ready" : "waiting"}>{item.bancoPronto ? "Banco pronto" : "Banco pendente"}</span>
                           <span className="ready">Link pronto</span>
                           <span className={item.donoPronto ? "ready" : "waiting"}>{item.donoPronto ? "Dono criado" : "Dono pendente"}</span>
-                          <span className={item.impressaoConfigurada ? "protected" : "waiting"}><ShieldCheck size={13} />{item.impressaoConfigurada ? "Impressão protegida" : "Impressão pendente"}</span>
+                          <span className={item.impressaoConfigurada ? "protected" : "waiting"}><ShieldCheck size={13} aria-hidden="true" />{item.impressaoConfigurada ? "Impressão protegida" : "Impressão pendente"}</span>
                         </div>
                       </div>
                     </div>
@@ -555,42 +555,42 @@ export default function DashboardPage() {
                       <small>Situação</small>
                       <label className="status-select">
                         <span className="sr-only">Situação de {item.nome}</span>
-                        <select value={item.status} onChange={(event) => void changeStatus(item, event.target.value as Status)}>
+                        <select name={`status-${item.id}`} value={item.status} onChange={(event) => void changeStatus(item, event.target.value as Status)}>
                           <option value="TESTE">Em teste</option>
                           <option value="ATIVO" disabled={!item.bancoPronto || !item.donoPronto}>Ativo</option>
                           <option value="INADIMPLENTE">Inadimplente</option>
                           <option value="SUSPENSO">Suspenso</option>
                           <option value="CANCELADO">Cancelado</option>
                         </select>
-                        <ChevronDown size={15} />
+                        <ChevronDown size={15} aria-hidden="true" />
                       </label>
                     </div>
 
                     <div className="client-actions">
-                      <button onClick={() => { setEditingFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setModulesFor(null); setBillingFor(null); setOwnerFor(null); }}>
-                        <Pencil size={20} /><span>Editar</span>
+                      <button type="button" onClick={() => { setEditingFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setModulesFor(null); setBillingFor(null); setOwnerFor(null); }}>
+                        <Pencil size={20} aria-hidden="true" /><span>Editar</span>
                       </button>
-                      <button onClick={() => { setBrandingFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setEditingFor(null); setBillingFor(null); setOwnerFor(null); }}>
-                        <Palette size={20} /><span>Personalizar</span>
+                      <button type="button" onClick={() => { setBrandingFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setEditingFor(null); setBillingFor(null); setOwnerFor(null); }}>
+                        <Palette size={20} aria-hidden="true" /><span>Personalizar</span>
                       </button>
-                      <button onClick={() => { setModulesFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setEditingFor(null); setBillingFor(null); setOwnerFor(null); }}>
-                        <Blocks size={20} /><span>Módulos</span>
+                      <button type="button" onClick={() => { setModulesFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setEditingFor(null); setBillingFor(null); setOwnerFor(null); }}>
+                        <Blocks size={20} aria-hidden="true" /><span>Módulos</span>
                       </button>
-                      <button onClick={() => void provisionDatabase(item)} disabled={provisioning === item.id} title="Aplicar atualizações no banco">
-                        {provisioning === item.id ? <LoaderCircle size={20} className="animate-spin" /> : <Database size={20} />}
+                      <button type="button" onClick={() => void provisionDatabase(item)} disabled={provisioning === item.id} title="Aplicar atualizações no banco">
+                        {provisioning === item.id ? <LoaderCircle size={20} className="animate-spin" aria-hidden="true" /> : <Database size={20} aria-hidden="true" />}
                         <span>{item.bancoPronto ? "Atualizar banco" : "Preparar banco"}</span>
                       </button>
-                      <button onClick={() => { setBillingFor((current) => current?.id === item.id ? null : item); setModulesFor(null); }}>
-                        <CircleDollarSign size={20} /><span>Mensalidade</span>
+                      <button type="button" onClick={() => { setBillingFor((current) => current?.id === item.id ? null : item); setModulesFor(null); }}>
+                        <CircleDollarSign size={20} aria-hidden="true" /><span>Mensalidade</span>
                       </button>
-                      <button onClick={() => void generatePrinterToken(item)}>
-                        <ShieldCheck size={20} /><span>Token impressão</span>
+                      <button type="button" onClick={() => void generatePrinterToken(item)}>
+                        <ShieldCheck size={20} aria-hidden="true" /><span>Token impressão</span>
                       </button>
-                      <button onClick={() => void generateInstallationCode(item)} title={establishmentInstallationUrl(operationalBase, item.slug)}>
-                        <MonitorCheck size={20} /><span>Gerar ativação</span>
+                      <button type="button" onClick={() => void generateInstallationCode(item)} title={establishmentInstallationUrl(operationalBase, item.slug)}>
+                        <MonitorCheck size={20} aria-hidden="true" /><span>Gerar ativação</span>
                       </button>
-                      <button className="access-button" onClick={() => { setOwnerFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setOwnerMode("create"); }}>
-                        <KeyRound size={19} /><span>Dono e senha</span><ArrowRight size={16} aria-hidden />
+                      <button type="button" className="access-button" onClick={() => { setOwnerFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setOwnerMode("create"); }}>
+                        <KeyRound size={19} aria-hidden="true" /><span>Dono e senha</span><ArrowRight size={16} aria-hidden="true" />
                       </button>
                     </div>
 
@@ -696,7 +696,7 @@ export default function DashboardPage() {
                     )}
 
                     {billingFor?.id === item.id && (
-                      <form onSubmit={updateSubscription} className="inline-form md:grid-cols-2">
+                      <form onSubmit={updateSubscription} className="inline-form inline-form--two-columns">
                         <Field name="valorMensal" label="Mensalidade" type="number" defaultValue={String(item.assinatura?.valorMensal ?? 0)} required />
                         <Field name="proximoVencimento" label="Próximo vencimento" type="date" defaultValue={item.assinatura?.proximoVencimento?.slice(0, 10) || ""} />
                         <FormActions saving={saving} onCancel={() => setBillingFor(null)} label="Salvar mensalidade" />
@@ -705,9 +705,9 @@ export default function DashboardPage() {
 
                     {ownerFor?.id === item.id && (
                       <div className="inline-form">
-                        <div className="mode-tabs">
-                          <button type="button" onClick={() => setOwnerMode("create")} className={ownerMode === "create" ? "active" : ""}>Criar Dono</button>
-                          <button type="button" onClick={() => setOwnerMode("reset")} className={ownerMode === "reset" ? "active" : ""}>Redefinir senha</button>
+                        <div className="mode-tabs" role="tablist" aria-label="Tipo de acesso do dono">
+                          <button type="button" role="tab" aria-selected={ownerMode === "create"} onClick={() => setOwnerMode("create")} className={ownerMode === "create" ? "active" : ""}>Criar dono</button>
+                          <button type="button" role="tab" aria-selected={ownerMode === "reset"} onClick={() => setOwnerMode("reset")} className={ownerMode === "reset" ? "active" : ""}>Redefinir senha</button>
                         </div>
                         {ownerMode === "create" ? (
                           <form onSubmit={createOwner} className="form-grid form-grid--owner">
@@ -718,7 +718,7 @@ export default function DashboardPage() {
                             <FormActions saving={saving} onCancel={() => setOwnerFor(null)} label="Criar acesso do Dono" />
                           </form>
                         ) : (
-                          <form onSubmit={resetOwnerPassword} className="form-grid md:grid-cols-2">
+                          <form onSubmit={resetOwnerPassword} className="form-grid form-grid--compact">
                             <Field name="login" label="Login do Dono" required />
                             <Field name="senha" label="Nova senha" type="password" required />
                             <FormActions saving={saving} onCancel={() => setOwnerFor(null)} label="Redefinir senha" />

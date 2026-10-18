@@ -27,6 +27,8 @@ export function Field({
         defaultValue={defaultValue}
         placeholder={placeholder}
         autoComplete="off"
+        inputMode={type === "number" ? "decimal" : type === "tel" ? "tel" : undefined}
+        spellCheck={type === "email" ? false : undefined}
       />
       {hint ? <small className="field-hint">{hint}</small> : null}
     </label>

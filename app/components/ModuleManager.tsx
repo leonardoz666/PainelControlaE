@@ -105,9 +105,9 @@ export function ModuleManager({ establishment, onClose, onSaved }: ModuleManager
       </div>
 
       {loading ? (
-        <div className="module-loading" role="status"><LoaderCircle size={18} className="animate-spin" /> Carregando catálogo…</div>
+        <div className="module-loading" role="status"><LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> Carregando catálogo…</div>
       ) : catalog.length === 0 && !error ? (
-        <div className="module-loading"><PackageOpen size={18} /> Nenhum módulo cadastrado.</div>
+        <div className="module-loading"><PackageOpen size={18} aria-hidden="true" /> Nenhum módulo cadastrado.</div>
       ) : (
         <div className="module-grid">
           {catalog.map(module => {
@@ -137,7 +137,7 @@ export function ModuleManager({ establishment, onClose, onSaved }: ModuleManager
       <div className="module-actions">
         <span>{selected.size} de {catalog.length} módulos selecionados</span>
         <button type="button" className="primary-button" onClick={() => void save()} disabled={loading || saving}>
-          {saving ? <LoaderCircle size={17} className="animate-spin" /> : <Save size={17} />}
+          {saving ? <LoaderCircle size={17} className="animate-spin" aria-hidden="true" /> : <Save size={17} aria-hidden="true" />}
           Salvar módulos
         </button>
       </div>

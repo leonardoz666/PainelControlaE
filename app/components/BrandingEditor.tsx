@@ -100,19 +100,19 @@ function ImageAsset({
   onRemove: () => void;
 }) {
   return (
-    <div className="flex min-w-0 flex-col gap-3 rounded-xl bg-violet-50/70 p-4 sm:flex-row sm:items-center">
-      <div className={`${wide ? "aspect-[16/9] w-full sm:w-40" : "h-20 w-20"} grid shrink-0 place-items-center overflow-hidden rounded-xl bg-white p-2 shadow-[0_6px_18px_rgba(45,27,102,0.09)]`}>
-        {value ? <img src={value} alt={`Prévia: ${title}`} width={wide ? 640 : 160} height={wide ? 360 : 160} className={`h-full w-full ${wide ? "object-cover" : "object-contain"}`} /> : <ImagePlus size={24} className="text-violet-300" aria-hidden />}
+    <div className={`brand-asset${wide ? " brand-asset--wide" : ""}`}>
+      <div className="brand-asset-preview">
+        {value ? <img src={value} alt={`Prévia: ${title}`} width={wide ? 640 : 160} height={wide ? 360 : 160} className={`brand-asset-image${wide ? " brand-asset-image--cover" : ""}`} /> : <ImagePlus size={24} aria-hidden="true" />}
       </div>
-      <div className="min-w-0 flex-1">
-        <p className="m-0 text-sm font-extrabold text-slate-900">{title}</p>
-        <p className="mt-1 text-xs leading-5 text-slate-600">{description}</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          <label className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-lg bg-slate-900 px-3.5 text-sm font-bold text-white hover:bg-slate-700 focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-violet-700">
-            <ImagePlus size={16} />{loading ? "Preparando…" : value ? "Trocar" : "Escolher"}
+      <div className="brand-asset-copy">
+        <strong>{title}</strong>
+        <p>{description}</p>
+        <div className="brand-asset-actions">
+          <label className="brand-upload-button">
+            <ImagePlus size={16} aria-hidden="true" />{loading ? "Preparando…" : value ? "Trocar" : "Escolher"}
             <input type="file" accept="image/png,image/jpeg,image/webp" onChange={onSelect} disabled={loading} className="sr-only" />
           </label>
-          {value && <button type="button" onClick={onRemove} className="inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-bold text-red-700 hover:bg-red-50"><Trash2 size={16} />Remover</button>}
+          {value && <button type="button" onClick={onRemove} className="brand-remove-button"><Trash2 size={16} aria-hidden="true" />Remover</button>}
         </div>
       </div>
     </div>
@@ -196,11 +196,11 @@ export function BrandingEditor({
   }
 
   if (loading) {
-    return <div className="inline-form min-h-40 place-items-center" role="status"><LoaderCircle className="animate-spin text-violet-700" /><span className="sr-only">Carregando personalização</span></div>;
+    return <div className="inline-form branding-state" role="status"><LoaderCircle className="animate-spin" aria-hidden="true" /><span>Carregando personalização…</span></div>;
   }
 
   if (!form) {
-    return <div className="inline-form"><p className="m-0 text-sm font-semibold text-red-700">{error || "Não foi possível abrir a personalização."}</p><button type="button" onClick={onClose} className="secondary-button justify-self-start">Fechar</button></div>;
+    return <div className="inline-form branding-state branding-state--error"><p>{error || "Não foi possível abrir a personalização."}</p><button type="button" onClick={onClose} className="secondary-button">Fechar</button></div>;
   }
 
   const previewFont = form.fonteInterface === "CLASSICA"
@@ -221,24 +221,24 @@ export function BrandingEditor({
         <button type="button" onClick={onClose} className="text-button">Fechar</button>
       </div>
 
-      {error && <div role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">{error}</div>}
+      {error && <div role="alert" className="branding-error">{error}</div>}
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="grid gap-5">
-          <div className="grid gap-4 md:grid-cols-2">
+      <div className="branding-layout">
+        <div className="branding-fields">
+          <div className="branding-field-row">
             <label className="field">
               <span>Nome exibido</span>
-              <input value={form.nomeExibicao} onChange={(event) => update("nomeExibicao", event.target.value)} maxLength={80} required />
+              <input name="nomeExibicao" value={form.nomeExibicao} onChange={(event) => update("nomeExibicao", event.target.value)} maxLength={80} required />
             </label>
             <label className="field">
               <span>Mensagem de entrada</span>
-              <input value={form.slogan} onChange={(event) => update("slogan", event.target.value)} maxLength={140} placeholder="Ex.: Atendimento rápido, gestão completa." />
+              <input name="slogan" value={form.slogan} onChange={(event) => update("slogan", event.target.value)} maxLength={140} placeholder="Ex.: Atendimento rápido, gestão completa." />
             </label>
           </div>
 
-          <section>
-            <div className="mb-3 flex items-center gap-2"><ImagePlus size={18} className="text-violet-700" /><h5 className="m-0 text-sm font-extrabold text-slate-900">Arquivos da marca</h5></div>
-            <div className="grid gap-3 lg:grid-cols-2">
+          <section className="branding-section">
+            <div className="branding-section-title"><ImagePlus size={18} aria-hidden="true" /><h5>Arquivos da marca</h5></div>
+            <div className="branding-asset-grid">
               <ImageAsset title="Logo principal" description="Usada no login e em áreas amplas. PNG, JPEG ou WebP." value={form.logoUrl} loading={imageLoading === "logoUrl"} onSelect={(event) => void selectImage("logoUrl", event)} onRemove={() => update("logoUrl", "")} />
               <ImageAsset title="Logo compacta" description="Versão quadrada para menu recolhido e cabeçalhos." value={form.logoCompactaUrl} loading={imageLoading === "logoCompactaUrl"} onSelect={(event) => void selectImage("logoCompactaUrl", event)} onRemove={() => update("logoCompactaUrl", "")} />
               <ImageAsset title="Favicon" description="Ícone exibido na aba do navegador. Prefira uma marca simples." value={form.faviconUrl} loading={imageLoading === "faviconUrl"} onSelect={(event) => void selectImage("faviconUrl", event)} onRemove={() => update("faviconUrl", "")} />
@@ -246,30 +246,30 @@ export function BrandingEditor({
             </div>
           </section>
 
-          <section>
-            <div className="mb-3 flex items-center gap-2"><Palette size={18} className="text-violet-700" /><h5 className="m-0 text-sm font-extrabold text-slate-900">Cores da identidade</h5></div>
-            <div className="grid gap-3 sm:grid-cols-3">
+          <section className="branding-section">
+            <div className="branding-section-title"><Palette size={18} aria-hidden="true" /><h5>Cores da identidade</h5></div>
+            <div className="branding-color-grid">
               {([['corPrimaria', 'Principal'], ['corSecundaria', 'Institucional'], ['corDestaque', 'Destaque']] as const).map(([field, label]) => (
-                <label key={field} className="rounded-xl bg-slate-50 p-3 text-xs font-bold text-slate-700">
+                <label key={field} className="branding-color-field">
                   {label}
-                  <span className="mt-2 flex items-center gap-2">
-                    <input type="color" value={form[field]} onChange={(event) => update(field, event.target.value)} className="h-10 w-11 cursor-pointer rounded-lg border border-slate-300 bg-white p-1" aria-label={`Cor ${label.toLowerCase()}`} />
-                    <input value={form[field]} onChange={(event) => update(field, event.target.value)} pattern="#[0-9a-fA-F]{6}" maxLength={7} className="h-10 min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-2 font-mono text-xs font-bold uppercase" aria-label={`Cor ${label.toLowerCase()} hexadecimal`} />
+                  <span className="branding-color-controls">
+                    <input type="color" name={field} value={form[field]} onChange={(event) => update(field, event.target.value)} className="branding-color-swatch" aria-label={`Cor ${label.toLowerCase()}`} />
+                    <input name={`${field}-hex`} value={form[field]} onChange={(event) => update(field, event.target.value)} pattern="#[0-9a-fA-F]{6}" maxLength={7} className="branding-color-code" aria-label={`Cor ${label.toLowerCase()} hexadecimal`} spellCheck={false} autoComplete="off" />
                   </span>
                 </label>
               ))}
             </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {PRESETS.map((preset) => <button key={preset.nome} type="button" onClick={() => setForm((current) => current ? { ...current, corPrimaria: preset.primaria, corSecundaria: preset.secundaria, corDestaque: preset.destaque } : current)} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 hover:border-violet-300 hover:bg-violet-50"><span className="flex">{[preset.primaria, preset.secundaria, preset.destaque].map((color) => <i key={color} className="-ml-1 h-5 w-5 first:ml-0 rounded-full border-2 border-white" style={{ backgroundColor: color }} />)}</span>{preset.nome}</button>)}
+            <div className="branding-presets">
+              {PRESETS.map((preset) => <button key={preset.nome} type="button" onClick={() => setForm((current) => current ? { ...current, corPrimaria: preset.primaria, corSecundaria: preset.secundaria, corDestaque: preset.destaque } : current)} className="branding-preset"><span className="branding-preset-swatches" aria-hidden="true">{[preset.primaria, preset.secundaria, preset.destaque].map((color) => <i key={color} style={{ backgroundColor: color }} />)}</span>{preset.nome}</button>)}
             </div>
           </section>
 
-          <section>
-            <div className="mb-3 flex items-center gap-2"><MonitorCog size={18} className="text-violet-700" /><h5 className="m-0 text-sm font-extrabold text-slate-900">Estilo da interface</h5></div>
-            <div className="grid gap-4 md:grid-cols-2">
+          <section className="branding-section">
+            <div className="branding-section-title"><MonitorCog size={18} aria-hidden="true" /><h5>Estilo da interface</h5></div>
+            <div className="branding-field-row">
               <label className="field">
                 <span>Tipografia</span>
-                <select value={form.fonteInterface} onChange={(event) => update("fonteInterface", event.target.value as Branding["fonteInterface"])}>
+                <select name="fonteInterface" value={form.fonteInterface} onChange={(event) => update("fonteInterface", event.target.value as Branding["fonteInterface"])}>
                   <option value="MODERNA">Moderna — Manrope/Geist</option>
                   <option value="SISTEMA">Sistema — Segoe UI</option>
                   <option value="CLASSICA">Clássica — Georgia</option>
@@ -277,49 +277,49 @@ export function BrandingEditor({
               </label>
               <label className="field">
                 <span>Tema inicial</span>
-                <select value={form.temaPadrao} onChange={(event) => update("temaPadrao", event.target.value as Branding["temaPadrao"])}>
+                <select name="temaPadrao" value={form.temaPadrao} onChange={(event) => update("temaPadrao", event.target.value as Branding["temaPadrao"])}>
                   <option value="SISTEMA">Acompanhar aparelho</option>
                   <option value="CLARO">Sempre claro</option>
                   <option value="ESCURO">Sempre escuro</option>
                 </select>
               </label>
             </div>
-            <p className="mt-2 text-xs leading-5 text-slate-600">O tema define a primeira abertura. Depois, cada usuário ainda pode escolher claro ou escuro no próprio aparelho.</p>
+            <p className="branding-note">O tema define a primeira abertura. Depois, cada usuário ainda pode escolher claro ou escuro no próprio aparelho.</p>
           </section>
         </div>
 
-        <aside className="grid content-start gap-4" style={{ fontFamily: previewFont }}>
-          <div className="overflow-hidden rounded-xl bg-white shadow-[0_12px_30px_rgba(36,19,93,0.12)]">
-          <div className="flex min-h-48 flex-col justify-between p-5" style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>
-            <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-lg bg-white/15 p-2">{navigationLogo ? <img src={navigationLogo} alt="" width={48} height={48} className="h-full w-full object-contain" /> : <strong className="text-xl">{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
+        <aside className="branding-preview" style={{ fontFamily: previewFont }}>
+          <div className="brand-preview-card">
+          <div className="brand-preview-hero" style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>
+            <div className="brand-preview-identity">
+              <div className="brand-preview-logo">{navigationLogo ? <img src={navigationLogo} alt="" width={48} height={48} /> : <strong>{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
               <strong>{form.nomeExibicao || establishment.nome}</strong>
             </div>
-            <p className="m-0 text-2xl font-extrabold leading-tight tracking-[-0.03em]">{form.slogan || "Sua mensagem aparece aqui."}</p>
+            <p className="brand-preview-slogan">{form.slogan || "Sua mensagem aparece aqui."}</p>
           </div>
-          <div className="p-5" style={{ backgroundColor: darkPreview ? "#111c2e" : "#ffffff", color: darkPreview ? "#f8fafc" : form.corSecundaria }}>
-            <p className="m-0 text-xs font-bold uppercase tracking-wider text-slate-500">Prévia do sistema</p>
-            <div className="mt-4 flex items-center justify-between gap-3"><div><strong className="block">Mesa 08</strong><small className="text-slate-500">Em atendimento</small></div><span className="rounded-lg px-3 py-2 text-xs font-bold" style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>Abrir mesa</span></div>
-            <div className="mt-4 h-1.5 rounded-full" style={{ backgroundColor: form.corDestaque }} />
+          <div className="brand-preview-content" style={{ backgroundColor: darkPreview ? "#111c2e" : "#ffffff", color: darkPreview ? "#f8fafc" : form.corSecundaria }}>
+            <p>Prévia do sistema</p>
+            <div className="brand-preview-table"><div><strong>Mesa 08</strong><small>Em atendimento</small></div><span style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>Abrir mesa</span></div>
+            <div className="brand-preview-accent" style={{ backgroundColor: form.corDestaque }} />
           </div>
           </div>
 
-          <div className="relative min-h-56 overflow-hidden rounded-xl shadow-[0_12px_30px_rgba(36,19,93,0.12)]" style={{ backgroundColor: form.corPrimaria, backgroundImage: form.imagemLoginUrl ? `url(${form.imagemLoginUrl})` : undefined, backgroundPosition: "center", backgroundSize: "cover" }}>
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="relative z-10 grid min-h-56 place-items-center p-6 text-center text-white">
+          <div className="brand-login-preview" style={{ backgroundColor: form.corPrimaria, backgroundImage: form.imagemLoginUrl ? `url(${form.imagemLoginUrl})` : undefined, backgroundPosition: "center", backgroundSize: "cover" }}>
+            <div className="brand-login-overlay" />
+            <div className="brand-login-content">
               <div>
-                <div className="mx-auto grid h-16 w-24 place-items-center overflow-hidden rounded-xl bg-white/15 p-2 backdrop-blur-sm">{form.logoUrl ? <img src={form.logoUrl} alt="" width={96} height={64} className="h-full w-full object-contain" /> : <strong className="text-2xl">{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
-                <strong className="mt-3 block text-xl">{form.nomeExibicao || establishment.nome}</strong>
-                <span className="mt-1 block text-xs text-white/80">{form.slogan || "Sua mensagem aparece aqui."}</span>
+                <div className="brand-login-logo">{form.logoUrl ? <img src={form.logoUrl} alt="" width={96} height={64} /> : <strong>{form.nomeExibicao.charAt(0).toUpperCase() || "R"}</strong>}</div>
+                <strong className="brand-login-name">{form.nomeExibicao || establishment.nome}</strong>
+                <span className="brand-login-slogan">{form.slogan || "Sua mensagem aparece aqui."}</span>
               </div>
             </div>
           </div>
         </aside>
       </div>
 
-      <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
-        <button type="button" onClick={() => setForm({ ...form, nomeExibicao: form.nome, slogan: "Operação, atendimento e gestão em um só lugar.", logoUrl: "", logoCompactaUrl: "", faviconUrl: "", imagemLoginUrl: "", fonteInterface: "MODERNA", temaPadrao: "SISTEMA", ...DEFAULT_COLORS })} disabled={saving} className="secondary-button inline-flex items-center justify-center gap-2"><RotateCcw size={16} />Restaurar padrão</button>
-        <button disabled={saving || Boolean(imageLoading)} className="primary-button"><Save size={17} />{saving ? "Salvando…" : "Salvar personalização"}</button>
+      <div className="branding-footer">
+        <button type="button" onClick={() => setForm({ ...form, nomeExibicao: form.nome, slogan: "Operação, atendimento e gestão em um só lugar.", logoUrl: "", logoCompactaUrl: "", faviconUrl: "", imagemLoginUrl: "", fonteInterface: "MODERNA", temaPadrao: "SISTEMA", ...DEFAULT_COLORS })} disabled={saving} className="secondary-button"><RotateCcw size={16} aria-hidden="true" />Restaurar padrão</button>
+        <button type="submit" disabled={saving || Boolean(imageLoading)} className="primary-button"><Save size={17} aria-hidden="true" />{saving ? "Salvando…" : "Salvar personalização"}</button>
       </div>
     </form>
   );
