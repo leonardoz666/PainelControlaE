@@ -18,6 +18,7 @@ export type Establishment = {
   garcomLatitude: number | null;
   garcomLongitude: number | null;
   garcomRaioMetros: number | null;
+  exigirVinculoGarcom: boolean;
   status: Status;
   bancoConfigurado: boolean;
   bancoPronto: boolean;

@@ -176,6 +176,7 @@ export default function DashboardPage() {
           garcomLatitude: optionalNumber(form, "garcomLatitude"),
           garcomLongitude: optionalNumber(form, "garcomLongitude"),
           garcomRaioMetros: optionalNumber(form, "garcomRaioMetros"),
+          exigirVinculoGarcom: form.get("exigirVinculoGarcom") === "on",
           databaseUrl: form.get("databaseUrl"),
           valorMensal: Number(form.get("valorMensal") || 0),
           proximoVencimento: form.get("proximoVencimento") || null,
@@ -329,6 +330,7 @@ export default function DashboardPage() {
           garcomLatitude: optionalNumber(form, "garcomLatitude"),
           garcomLongitude: optionalNumber(form, "garcomLongitude"),
           garcomRaioMetros: optionalNumber(form, "garcomRaioMetros"),
+          exigirVinculoGarcom: form.get("exigirVinculoGarcom") === "on",
           ...(databaseUrl ? { databaseUrl } : {}),
         }),
       });
@@ -362,7 +364,7 @@ export default function DashboardPage() {
       const result = await api<{ code: string }>(`/estabelecimentos/${item.id}/aplicativo/codigo`, { method: "POST" });
       const establishmentUrl = establishmentInstallationUrl(operationalBase, item.slug);
       setInstallationCode({ id: item.id, value: result.code, establishmentUrl });
-      const copied = await navigator.clipboard.writeText(`Link exclusivo de ativação do dono: ${establishmentUrl}\nCódigo de ativação: ${result.code}\n\nDepois de ativar, a equipe entra por: ${establishmentLoginUrl(operationalBase, item.slug)}`).then(() => true).catch(() => false);
+      const copied = await navigator.clipboard.writeText(`Link único do estabelecimento: ${establishmentUrl}\nCódigo para a primeira ativação: ${result.code}`).then(() => true).catch(() => false);
       setAnnouncement(copied ? "Dados de instalação gerados e copiados." : "Dados de instalação gerados. Copie-os no painel.");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Falha ao gerar código de ativação");
@@ -490,6 +492,10 @@ export default function DashboardPage() {
                 <Field name="garcomLatitude" label="Latitude para login de garçons" type="number" placeholder="-12.000000" />
                 <Field name="garcomLongitude" label="Longitude para login de garçons" type="number" placeholder="-38.000000" />
                 <Field name="garcomRaioMetros" label="Raio permitido (metros)" type="number" placeholder="50" hint="Deixe os três campos vazios para não restringir o login por localização." />
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <input name="exigirVinculoGarcom" type="checkbox" className="mt-1 h-4 w-4 accent-violet-600" />
+                  <span><strong className="block text-sm text-slate-900">Exigir celular autorizado para garçons</strong><span className="mt-1 block text-xs leading-5 text-slate-600">Quando ativo, cada garçom precisa abrir uma vez o convite individual gerado na tela de usuários.</span></span>
+                </label>
                 <Field name="valorMensal" label="Mensalidade" type="number" placeholder="0,00" />
                 <Field name="proximoVencimento" label="Próximo vencimento" type="date" />
                 <Field name="databaseUrl" label="Conexão PostgreSQL" type="password" required />
@@ -593,7 +599,7 @@ export default function DashboardPage() {
                         <MonitorCheck size={20} /><span>Ativar aplicativo</span>
                       </button>
                       <button className="access-button" onClick={() => { setOwnerFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setOwnerMode("create"); }}>
-                        <KeyRound size={19} /><span>Acesso</span><ArrowRight size={16} aria-hidden />
+                        <KeyRound size={19} /><span>Dono e senha</span><ArrowRight size={16} aria-hidden />
                       </button>
                     </div>
 
@@ -615,6 +621,10 @@ export default function DashboardPage() {
                           <Field name="garcomLatitude" label="Latitude para login de garçons" type="number" defaultValue={item.garcomLatitude == null ? "" : String(item.garcomLatitude)} />
                           <Field name="garcomLongitude" label="Longitude para login de garçons" type="number" defaultValue={item.garcomLongitude == null ? "" : String(item.garcomLongitude)} />
                           <Field name="garcomRaioMetros" label="Raio permitido (metros)" type="number" defaultValue={item.garcomRaioMetros == null ? "" : String(item.garcomRaioMetros)} hint="Deixe os três campos vazios para não restringir o login por localização." />
+                          <label className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                            <input name="exigirVinculoGarcom" type="checkbox" defaultChecked={item.exigirVinculoGarcom} className="mt-1 h-4 w-4 accent-violet-600" />
+                            <span><strong className="block text-sm text-slate-900">Exigir celular autorizado para garçons</strong><span className="mt-1 block text-xs leading-5 text-slate-600">Desative para permitir login normal. Ative para exigir o convite individual por aparelho.</span></span>
+                          </label>
                           <Field name="databaseUrl" label="Nova conexão PostgreSQL" type="password" placeholder="Manter conexão atual" hint="Ao trocar o banco, o cliente volta para Em teste e precisa ser preparado novamente." />
                           <FormActions saving={saving} onCancel={() => setEditingFor(null)} label="Salvar alterações" />
                         </div>
@@ -660,12 +670,10 @@ export default function DashboardPage() {
                     {installationCode?.id === item.id && (
                       <div className="token-banner">
                         <strong>Dados para ativar o aplicativo. O código é válido por 15 minutos.</strong>
-                        <span className="token-label">Link exclusivo de ativação do dono</span>
+                        <span className="token-label">Link único do estabelecimento</span>
                         <code>{installationCode.establishmentUrl}</code>
-                        <span className="token-label">Código de ativação</span>
+                        <span className="token-label">Código para a primeira ativação</span>
                         <code>{installationCode.value}</code>
-                        <span className="token-label">Link operacional da equipe</span>
-                        <code>{establishmentLoginUrl(operationalBase, item.slug)}</code>
                       </div>
                     )}
 

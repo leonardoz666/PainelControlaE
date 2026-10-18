@@ -13,12 +13,9 @@ export function normalizeOperationalBaseUrl(configuredValue: string | undefined)
 }
 
 export function establishmentLoginUrl(operationalBase: string, slug: string): string {
-  return new URL(`/e/${encodeURIComponent(slug)}/login`, `${operationalBase}/`).toString();
+  return new URL(`/e/${encodeURIComponent(slug)}`, `${operationalBase}/`).toString();
 }
 
 export function establishmentInstallationUrl(operationalBase: string, slug: string): string {
-  const establishmentUrl = new URL(`/e/${encodeURIComponent(slug)}`, `${operationalBase}/`).toString();
-  const activationUrl = new URL('/instalacao', `${operationalBase}/`);
-  activationUrl.searchParams.set('link', establishmentUrl);
-  return activationUrl.toString();
+  return establishmentLoginUrl(operationalBase, slug);
 }
