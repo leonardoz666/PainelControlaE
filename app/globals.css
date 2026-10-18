@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  --ui-scale: 1.1;
+  --ui-min-layout-width: 291px;
   --violet-950: #221746;
   --violet-900: #30205f;
   --violet-700: #6546d7;
@@ -26,7 +28,7 @@
 
 * { box-sizing: border-box; }
 html { background: var(--canvas); }
-body { margin: 0; min-width: 320px; background: var(--canvas); color: var(--ink); font-family: "Manrope Variable", "Segoe UI", sans-serif; text-rendering: optimizeLegibility; }
+body { margin: 0; min-width: var(--ui-min-layout-width); zoom: var(--ui-scale); background: var(--canvas); color: var(--ink); font-family: "Manrope Variable", "Segoe UI", sans-serif; text-rendering: optimizeLegibility; }
 ::selection { background: #d8ccff; color: #291261; }
 * { scrollbar-width: thin; scrollbar-color: #b9a8f2 transparent; }
 button, input, select { font: inherit; }

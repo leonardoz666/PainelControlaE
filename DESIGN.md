@@ -64,6 +64,8 @@ spacing:
   lg: "18px"
   xl: "24px"
   page: "32px"
+scale:
+  interface: "1.1"
 components:
   button-primary:
     backgroundColor: "{colors.primary-action}"
@@ -172,6 +174,8 @@ A paleta contrapõe violetas reais e profundos a uma base fria, luminosa e quase
 ## Layout
 
 No desktop, o shell reserva um rail fixo de 220px e entrega o restante a um canvas fluido. O conteúdo central tem largura máxima de 1440px e respiro de página de 28–32px. Cabeçalho, resumo e clientes compartilham o mesmo eixo. O resumo forma uma faixa contínua de cinco células; clientes formam registros separados por linhas, com identidade, cobrança e ações em zonas previsíveis.
+
+A interface usa escala global de 1.1 para que o tamanho padrão do navegador tenha a mesma presença visual de 110% de zoom. Breakpoints e container queries continuam responsáveis por reorganizar o conteúdo quando o espaço útil diminui.
 
 O ritmo usa intervalos compactos de 7–14px dentro de controles e grupos, 18–24px entre blocos internos e 25–34px entre seções. Isso mantém as ações densas sem parecerem apertadas. As métricas formam cinco colunas no desktop, três em telas intermediárias e duas no mobile; cartões de clientes quebram de três zonas para duas e finalmente para uma coluna.
 
