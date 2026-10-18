@@ -17,7 +17,6 @@ import {
   KeyRound,
   LoaderCircle,
   LogOut,
-  MapPin,
   MonitorCheck,
   Pencil,
   Palette,
@@ -26,7 +25,6 @@ import {
   Search,
   ShieldCheck,
   Store,
-  Trash2,
   TriangleAlert,
   Users,
   X,
@@ -37,7 +35,6 @@ import {
   establishmentLoginUrl,
   normalizeOperationalBaseUrl,
 } from "@/app/lib/operational-url";
-import { DeleteEstablishmentDialog, deletionConfirmation } from "@/app/components/dashboard/DeleteEstablishmentDialog";
 import { Field, FormActions } from "@/app/components/dashboard/FormControls";
 import type { Establishment, Status, Summary } from "@/app/components/dashboard/types";
 
@@ -89,15 +86,10 @@ export default function DashboardPage() {
   const [announcement, setAnnouncement] = useState("");
   const [provisioning, setProvisioning] = useState("");
   const [billingFor, setBillingFor] = useState<Establishment | null>(null);
-  const [editingFor, setEditingFor] = useState<Establishment | null>(null);
   const [brandingFor, setBrandingFor] = useState<Establishment | null>(null);
   const [modulesFor, setModulesFor] = useState<Establishment | null>(null);
   const [printerToken, setPrinterToken] = useState<{ id: string; value: string } | null>(null);
   const [installationCode, setInstallationCode] = useState<{ id: string; value: string; establishmentUrl: string } | null>(null);
-  const [deleteFor, setDeleteFor] = useState<Establishment | null>(null);
-  const [deleteConfirmation, setDeleteConfirmation] = useState("");
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState("");
   const [search, setSearch] = useState("");
 
   const operationalBase = useMemo(
@@ -298,39 +290,6 @@ export default function DashboardPage() {
     }
   }
 
-  async function updateEstablishment(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!editingFor) return;
-    setSaving(true);
-    setError("");
-    const form = new FormData(event.currentTarget);
-    const databaseUrl = String(form.get("databaseUrl") || "").trim();
-    try {
-      await api(`/estabelecimentos/${editingFor.id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          nome: form.get("nome"),
-          slug: form.get("slug"),
-          documento: form.get("documento") || null,
-          email: form.get("email") || null,
-          telefone: form.get("telefone") || null,
-          garcomLatitude: optionalNumber(form, "garcomLatitude"),
-          garcomLongitude: optionalNumber(form, "garcomLongitude"),
-          garcomRaioMetros: optionalNumber(form, "garcomRaioMetros"),
-          exigirVinculoGarcom: form.get("exigirVinculoGarcom") === "on",
-          ...(databaseUrl ? { databaseUrl } : {}),
-        }),
-      });
-      setEditingFor(null);
-      setAnnouncement(`Cadastro de ${editingFor.nome} atualizado.`);
-      await load();
-    } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Falha ao atualizar o estabelecimento");
-    } finally {
-      setSaving(false);
-    }
-  }
-
   async function generatePrinterToken(item: Establishment) {
     setError("");
     try {
@@ -356,43 +315,6 @@ export default function DashboardPage() {
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Falha ao gerar código de ativação");
       setAnnouncement("Falha ao gerar o código de ativação.");
-    }
-  }
-
-  function openDeleteDialog(item: Establishment) {
-    setEditingFor(null);
-    setBrandingFor(null);
-    setModulesFor(null);
-    setBillingFor(null);
-    setOwnerFor(null);
-    setDeleteConfirmation("");
-    setDeleteError("");
-    setDeleteFor(item);
-  }
-
-  async function deleteEstablishment(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!deleteFor || deleteConfirmation !== deletionConfirmation(deleteFor.slug)) return;
-    setDeleting(true);
-    setDeleteError("");
-    const form = new FormData(event.currentTarget);
-    try {
-      const result = await api<{ backupFile: string }>(`/estabelecimentos/${deleteFor.id}`, {
-        method: "DELETE",
-        body: JSON.stringify({
-          senha: form.get("senha"),
-          confirmacao: deleteConfirmation,
-        }),
-      });
-      const removedName = deleteFor.nome;
-      setDeleteFor(null);
-      setDeleteConfirmation("");
-      setAnnouncement(`${removedName} foi excluído após a criação do backup lógico ${result.backupFile}.`);
-      await load();
-    } catch (reason) {
-      setDeleteError(reason instanceof Error ? reason.message : "Falha ao remover o estabelecimento");
-    } finally {
-      setDeleting(false);
     }
   }
 
@@ -567,13 +489,13 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="client-actions">
-                      <button type="button" onClick={() => { setEditingFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setModulesFor(null); setBillingFor(null); setOwnerFor(null); }}>
+                      <button type="button" onClick={() => router.push(`/estabelecimentos/${encodeURIComponent(item.id)}/configuracoes`)}>
                         <Pencil size={20} aria-hidden="true" /><span>Editar</span>
                       </button>
-                      <button type="button" onClick={() => { setBrandingFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setEditingFor(null); setBillingFor(null); setOwnerFor(null); }}>
+                      <button type="button" onClick={() => { setBrandingFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setBillingFor(null); setOwnerFor(null); }}>
                         <Palette size={20} aria-hidden="true" /><span>Personalizar</span>
                       </button>
-                      <button type="button" onClick={() => { setModulesFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setEditingFor(null); setBillingFor(null); setOwnerFor(null); }}>
+                      <button type="button" onClick={() => { setModulesFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setBillingFor(null); setOwnerFor(null); }}>
                         <Blocks size={20} aria-hidden="true" /><span>Módulos</span>
                       </button>
                       <button type="button" onClick={() => void provisionDatabase(item)} disabled={provisioning === item.id} title="Aplicar atualizações no banco">
@@ -593,70 +515,6 @@ export default function DashboardPage() {
                         <KeyRound size={19} aria-hidden="true" /><span>Dono e senha</span><ArrowRight size={16} aria-hidden="true" />
                       </button>
                     </div>
-
-                    {editingFor?.id === item.id && (
-                      <form onSubmit={updateEstablishment} className="inline-form edit-establishment-form">
-                        <div className="edit-form-heading">
-                          <div className="edit-form-title">
-                            <span className="edit-form-title-icon"><Pencil size={19} /></span>
-                            <div>
-                              <h4>Editar estabelecimento</h4>
-                              <p>Organize os dados do cliente, as regras dos garçons e a infraestrutura.</p>
-                            </div>
-                          </div>
-                          <button type="button" onClick={() => setEditingFor(null)} className="edit-close-button" aria-label="Fechar edição"><X size={18} /><span>Fechar</span></button>
-                        </div>
-                        <div className="edit-sections">
-                          <section className="edit-section">
-                            <div className="edit-section-heading"><Building2 size={18} /><div><h5>Dados do estabelecimento</h5><p>Informações comerciais e endereço permanente de acesso.</p></div></div>
-                            <div className="edit-fields edit-fields--identity">
-                              <Field name="nome" label="Nome" defaultValue={item.nome} required />
-                              <Field name="slug" label="Link do estabelecimento" defaultValue={item.slug} required />
-                              <Field name="documento" label="CNPJ ou documento" defaultValue={item.documento ?? ""} />
-                              <Field name="email" label="E-mail comercial" type="email" defaultValue={item.email ?? ""} />
-                              <Field name="telefone" label="Telefone" defaultValue={item.telefone ?? ""} />
-                            </div>
-                          </section>
-
-                          <div className="edit-section-pair">
-                            <section className="edit-section edit-section--access">
-                              <div className="edit-section-heading"><ShieldCheck size={18} /><div><h5>Acesso dos garçons</h5><p>Escolha se cada celular precisa de autorização individual.</p></div></div>
-                              <label className="policy-toggle">
-                                <input name="exigirVinculoGarcom" type="checkbox" defaultChecked={item.exigirVinculoGarcom} />
-                                <span className="policy-switch" aria-hidden="true"><span /></span>
-                                <span className="policy-copy"><strong>Exigir celular autorizado</strong><small>Quando desligado, o garçom entra normalmente com login e senha.</small></span>
-                              </label>
-                              <div className="location-heading"><MapPin size={16} /><span>Limite por localização</span></div>
-                              <div className="edit-fields edit-fields--location">
-                                <Field name="garcomLatitude" label="Latitude" type="number" defaultValue={item.garcomLatitude == null ? "" : String(item.garcomLatitude)} />
-                                <Field name="garcomLongitude" label="Longitude" type="number" defaultValue={item.garcomLongitude == null ? "" : String(item.garcomLongitude)} />
-                                <Field name="garcomRaioMetros" label="Raio em metros" type="number" defaultValue={item.garcomRaioMetros == null ? "" : String(item.garcomRaioMetros)} />
-                              </div>
-                              <p className="edit-section-note">Deixe os três campos vazios para permitir login de qualquer localização.</p>
-                            </section>
-
-                            <section className="edit-section edit-section--database">
-                              <div className="edit-section-heading"><Database size={18} /><div><h5>Infraestrutura</h5><p>A conexão atual permanece protegida e não é exibida.</p></div></div>
-                              <Field name="databaseUrl" label="Nova conexão PostgreSQL" type="password" placeholder="Manter conexão atual" />
-                              <div className="database-warning"><TriangleAlert size={17} /><span>Trocar o banco devolve o cliente ao status <strong>Em teste</strong> e exige nova preparação.</span></div>
-                            </section>
-                          </div>
-                        </div>
-                        <div className="edit-form-footer">
-                          <p>As alterações de acesso entram em vigor no próximo login.</p>
-                          <FormActions saving={saving} onCancel={() => setEditingFor(null)} label="Salvar alterações" />
-                        </div>
-                        <div className="danger-zone">
-                          <div>
-                            <strong>Remover do ControlaÊ</strong>
-                            <p>Exclui permanentemente o cadastro, todas as tabelas e dados do banco PostgreSQL e os arquivos deste estabelecimento.</p>
-                          </div>
-                          <button type="button" className="danger-button" onClick={() => openDeleteDialog(item)}>
-                            <Trash2 size={18} /> Remover estabelecimento
-                          </button>
-                        </div>
-                      </form>
-                    )}
 
                     {brandingFor?.id === item.id && (
                       <BrandingEditor
@@ -734,17 +592,6 @@ export default function DashboardPage() {
           </> : <AuditHistory />}
         </div>
       </main>
-      {deleteFor ? (
-        <DeleteEstablishmentDialog
-          item={deleteFor}
-          confirmation={deleteConfirmation}
-          deleting={deleting}
-          error={deleteError}
-          onConfirmationChange={setDeleteConfirmation}
-          onClose={() => { if (!deleting) { setDeleteFor(null); setDeleteError(""); } }}
-          onSubmit={deleteEstablishment}
-        />
-      ) : null}
     </div>
   );
 }
