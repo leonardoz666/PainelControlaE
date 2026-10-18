@@ -17,6 +17,7 @@ import {
   KeyRound,
   LoaderCircle,
   LogOut,
+  MapPin,
   MonitorCheck,
   Pencil,
   Palette,
@@ -28,6 +29,7 @@ import {
   Trash2,
   TriangleAlert,
   Users,
+  X,
 } from "lucide-react";
 import { api, ApiError } from "@/app/lib/api";
 import {
@@ -596,7 +598,7 @@ export default function DashboardPage() {
                         <ShieldCheck size={20} /><span>Token impressão</span>
                       </button>
                       <button onClick={() => void generateInstallationCode(item)} title={establishmentInstallationUrl(operationalBase, item.slug)}>
-                        <MonitorCheck size={20} /><span>Ativar aplicativo</span>
+                        <MonitorCheck size={20} /><span>Gerar ativação</span>
                       </button>
                       <button className="access-button" onClick={() => { setOwnerFor((current) => current?.id === item.id ? null : item); setModulesFor(null); setOwnerMode("create"); }}>
                         <KeyRound size={19} /><span>Dono e senha</span><ArrowRight size={16} aria-hidden />
@@ -605,27 +607,54 @@ export default function DashboardPage() {
 
                     {editingFor?.id === item.id && (
                       <form onSubmit={updateEstablishment} className="inline-form edit-establishment-form">
-                        <div className="inline-form-heading">
-                          <div>
-                            <h4>Editar estabelecimento</h4>
-                            <p>O link acompanha o identificador automaticamente. Deixe a conexão vazia para manter o banco atual.</p>
+                        <div className="edit-form-heading">
+                          <div className="edit-form-title">
+                            <span className="edit-form-title-icon"><Pencil size={19} /></span>
+                            <div>
+                              <h4>Editar estabelecimento</h4>
+                              <p>Organize os dados do cliente, as regras dos garçons e a infraestrutura.</p>
+                            </div>
                           </div>
-                          <button type="button" onClick={() => setEditingFor(null)} className="text-button">Fechar</button>
+                          <button type="button" onClick={() => setEditingFor(null)} className="edit-close-button" aria-label="Fechar edição"><X size={18} /><span>Fechar</span></button>
                         </div>
-                        <div className="form-grid edit-establishment-grid">
-                          <Field name="nome" label="Nome" defaultValue={item.nome} required />
-                          <Field name="slug" label="Link" defaultValue={item.slug} required />
-                          <Field name="documento" label="CNPJ ou documento" defaultValue={item.documento ?? ""} />
-                          <Field name="email" label="E-mail comercial" type="email" defaultValue={item.email ?? ""} />
-                          <Field name="telefone" label="Telefone" defaultValue={item.telefone ?? ""} />
-                          <Field name="garcomLatitude" label="Latitude para login de garçons" type="number" defaultValue={item.garcomLatitude == null ? "" : String(item.garcomLatitude)} />
-                          <Field name="garcomLongitude" label="Longitude para login de garçons" type="number" defaultValue={item.garcomLongitude == null ? "" : String(item.garcomLongitude)} />
-                          <Field name="garcomRaioMetros" label="Raio permitido (metros)" type="number" defaultValue={item.garcomRaioMetros == null ? "" : String(item.garcomRaioMetros)} hint="Deixe os três campos vazios para não restringir o login por localização." />
-                          <label className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                            <input name="exigirVinculoGarcom" type="checkbox" defaultChecked={item.exigirVinculoGarcom} className="mt-1 h-4 w-4 accent-violet-600" />
-                            <span><strong className="block text-sm text-slate-900">Exigir celular autorizado para garçons</strong><span className="mt-1 block text-xs leading-5 text-slate-600">Desative para permitir login normal. Ative para exigir o convite individual por aparelho.</span></span>
-                          </label>
-                          <Field name="databaseUrl" label="Nova conexão PostgreSQL" type="password" placeholder="Manter conexão atual" hint="Ao trocar o banco, o cliente volta para Em teste e precisa ser preparado novamente." />
+                        <div className="edit-sections">
+                          <section className="edit-section">
+                            <div className="edit-section-heading"><Building2 size={18} /><div><h5>Dados do estabelecimento</h5><p>Informações comerciais e endereço permanente de acesso.</p></div></div>
+                            <div className="edit-fields edit-fields--identity">
+                              <Field name="nome" label="Nome" defaultValue={item.nome} required />
+                              <Field name="slug" label="Link do estabelecimento" defaultValue={item.slug} required />
+                              <Field name="documento" label="CNPJ ou documento" defaultValue={item.documento ?? ""} />
+                              <Field name="email" label="E-mail comercial" type="email" defaultValue={item.email ?? ""} />
+                              <Field name="telefone" label="Telefone" defaultValue={item.telefone ?? ""} />
+                            </div>
+                          </section>
+
+                          <div className="edit-section-pair">
+                            <section className="edit-section edit-section--access">
+                              <div className="edit-section-heading"><ShieldCheck size={18} /><div><h5>Acesso dos garçons</h5><p>Escolha se cada celular precisa de autorização individual.</p></div></div>
+                              <label className="policy-toggle">
+                                <input name="exigirVinculoGarcom" type="checkbox" defaultChecked={item.exigirVinculoGarcom} />
+                                <span className="policy-switch" aria-hidden="true"><span /></span>
+                                <span className="policy-copy"><strong>Exigir celular autorizado</strong><small>Quando desligado, o garçom entra normalmente com login e senha.</small></span>
+                              </label>
+                              <div className="location-heading"><MapPin size={16} /><span>Limite por localização</span></div>
+                              <div className="edit-fields edit-fields--location">
+                                <Field name="garcomLatitude" label="Latitude" type="number" defaultValue={item.garcomLatitude == null ? "" : String(item.garcomLatitude)} />
+                                <Field name="garcomLongitude" label="Longitude" type="number" defaultValue={item.garcomLongitude == null ? "" : String(item.garcomLongitude)} />
+                                <Field name="garcomRaioMetros" label="Raio em metros" type="number" defaultValue={item.garcomRaioMetros == null ? "" : String(item.garcomRaioMetros)} />
+                              </div>
+                              <p className="edit-section-note">Deixe os três campos vazios para permitir login de qualquer localização.</p>
+                            </section>
+
+                            <section className="edit-section edit-section--database">
+                              <div className="edit-section-heading"><Database size={18} /><div><h5>Infraestrutura</h5><p>A conexão atual permanece protegida e não é exibida.</p></div></div>
+                              <Field name="databaseUrl" label="Nova conexão PostgreSQL" type="password" placeholder="Manter conexão atual" />
+                              <div className="database-warning"><TriangleAlert size={17} /><span>Trocar o banco devolve o cliente ao status <strong>Em teste</strong> e exige nova preparação.</span></div>
+                            </section>
+                          </div>
+                        </div>
+                        <div className="edit-form-footer">
+                          <p>As alterações de acesso entram em vigor no próximo login.</p>
                           <FormActions saving={saving} onCancel={() => setEditingFor(null)} label="Salvar alterações" />
                         </div>
                         <div className="danger-zone">
