@@ -1,0 +1,293 @@
+{
+  "communities": {
+    "0": [
+      "app_globals",
+      "app_layout",
+      "app_layout_metadata",
+      "app_layout_rootlayout",
+      "package",
+      "package_name",
+      "package_overrides",
+      "package_overrides_postcss",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_start",
+      "package_scripts_typecheck",
+      "package_version",
+      "ref_fontsource_variable_manrope",
+      "ref_next",
+      "ref_react_dom",
+      "ref_tailwindcss",
+      "ref_tailwindcss_postcss",
+      "ref_types_node",
+      "ref_types_react",
+      "ref_types_react_dom",
+      "ref_typescript"
+    ],
+    "1": [
+      "app_lib_api",
+      "app_lib_api_apierror",
+      "app_lib_api_apierror_constructor",
+      "app_lib_operational_url",
+      "app_lib_operational_url_establishmentinstallationurl",
+      "app_lib_operational_url_establishmentloginurl",
+      "app_lib_operational_url_normalizeoperationalbaseurl",
+      "app_login_page",
+      "app_page",
+      "app_page_dashboardpage_generateinstallationcode",
+      "app_page_establishment",
+      "app_page_field",
+      "app_page_metric",
+      "app_page_owneractions",
+      "app_page_status",
+      "app_page_status_label",
+      "app_page_status_style",
+      "app_page_summary",
+      "ref_lucide_react",
+      "ref_react"
+    ],
+    "2": [
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_allowjs",
+      "tsconfig_compileroptions_esmoduleinterop",
+      "tsconfig_compileroptions_incremental",
+      "tsconfig_compileroptions_isolatedmodules",
+      "tsconfig_compileroptions_jsx",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_paths",
+      "tsconfig_compileroptions_plugins",
+      "tsconfig_compileroptions_resolvejsonmodule",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target",
+      "tsconfig_exclude",
+      "tsconfig_include"
+    ],
+    "3": [
+      "app_lib_api_api",
+      "app_login_page_loginpage",
+      "app_login_page_loginpage_submit",
+      "app_page_dashboardpage",
+      "app_page_dashboardpage_changestatus",
+      "app_page_dashboardpage_createestablishment",
+      "app_page_dashboardpage_createowner",
+      "app_page_dashboardpage_deleteestablishment",
+      "app_page_dashboardpage_generateprintertoken",
+      "app_page_dashboardpage_logout",
+      "app_page_dashboardpage_opendeletedialog",
+      "app_page_dashboardpage_provisiondatabase",
+      "app_page_dashboardpage_resetownerpassword",
+      "app_page_dashboardpage_updateestablishment",
+      "app_page_dashboardpage_updatesubscription",
+      "app_page_deleteestablishmentdialog",
+      "app_page_deletionconfirmation",
+      "app_page_optionalnumber"
+    ],
+    "4": [
+      "app_components_brandingeditor",
+      "app_components_brandingeditor_branding",
+      "app_components_brandingeditor_brandingeditor",
+      "app_components_brandingeditor_brandingeditor_save",
+      "app_components_brandingeditor_brandingeditor_selectimage",
+      "app_components_brandingeditor_brandingeditor_update",
+      "app_components_brandingeditor_default_colors",
+      "app_components_brandingeditor_image_rules",
+      "app_components_brandingeditor_imageasset",
+      "app_components_brandingeditor_imagefield",
+      "app_components_brandingeditor_presets",
+      "app_components_brandingeditor_processimage",
+      "app_components_brandingeditor_readabletextcolor"
+    ],
+    "5": [
+      "app_components_audithistory",
+      "app_components_audithistory_action_label",
+      "app_components_audithistory_actions",
+      "app_components_audithistory_auditentry",
+      "app_components_audithistory_audithistory",
+      "app_components_audithistory_audithistory_submitsearch",
+      "app_components_audithistory_auditicon",
+      "app_components_audithistory_auditresponse",
+      "app_components_audithistory_detailtext",
+      "app_components_audithistory_establishmentname",
+      "app_components_audithistory_safedetail"
+    ],
+    "6": [
+      "app_api_path_route",
+      "app_api_path_route_delete",
+      "app_api_path_route_get",
+      "app_api_path_route_handler",
+      "app_api_path_route_hop_by_hop",
+      "app_api_path_route_patch",
+      "app_api_path_route_post",
+      "app_api_path_route_put"
+    ],
+    "7": [
+      "package_devdependencies",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_tailwindcss_postcss",
+      "package_devdependencies_types_node",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript"
+    ],
+    "8": [
+      "package_dependencies",
+      "package_dependencies_fontsource_variable_manrope",
+      "package_dependencies_lucide_react",
+      "package_dependencies_next",
+      "package_dependencies_react",
+      "package_dependencies_react_dom"
+    ],
+    "9": [
+      "next",
+      "next_config",
+      "next_config_nextconfig"
+    ],
+    "10": [
+      "vercel",
+      "vercel_buildcommand",
+      "vercel_framework"
+    ],
+    "11": [
+      "next_env_d",
+      "next_env_d_rationale_5"
+    ],
+    "12": [
+      "postcss_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.08695652173913043,
+    "1": 0.1368421052631579,
+    "2": 0.10526315789473684,
+    "3": 0.1895424836601307,
+    "4": 0.20512820512820512,
+    "5": 0.2727272727272727,
+    "6": 0.25,
+    "7": 0.2857142857142857,
+    "8": 0.3333333333333333,
+    "9": 0.6666666666666666,
+    "10": 0.6666666666666666,
+    "11": 1.0,
+    "12": 1.0
+  },
+  "gods": [
+    {
+      "id": "app_page_dashboardpage",
+      "label": "DashboardPage()",
+      "degree": 23
+    },
+    {
+      "id": "app_lib_api_api",
+      "label": "api()",
+      "degree": 18
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 16
+    },
+    {
+      "id": "app_components_brandingeditor_brandingeditor",
+      "label": "BrandingEditor()",
+      "degree": 8
+    },
+    {
+      "id": "app_components_audithistory_audithistory",
+      "label": "AuditHistory()",
+      "degree": 7
+    },
+    {
+      "id": "app_lib_api_apierror",
+      "label": "ApiError",
+      "degree": 5
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 5
+    },
+    {
+      "id": "ref_lucide_react",
+      "label": "lucide-react",
+      "degree": 5
+    },
+    {
+      "id": "ref_next",
+      "label": "next",
+      "degree": 5
+    },
+    {
+      "id": "ref_react",
+      "label": "react",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "DashboardPage()",
+      "target": "AuditHistory()",
+      "source_files": [
+        "app/page.tsx",
+        "app/components/AuditHistory.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "DashboardPage()",
+      "target": "BrandingEditor()",
+      "source_files": [
+        "app/page.tsx",
+        "app/components/BrandingEditor.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "submit()",
+      "target": "api()",
+      "source_files": [
+        "app/login/page.tsx",
+        "app/lib/api.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `submit()` unexpectedly reaches hub `api()`"
+    },
+    {
+      "source": "changeStatus()",
+      "target": "api()",
+      "source_files": [
+        "app/page.tsx",
+        "app/lib/api.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `changeStatus()` unexpectedly reaches hub `api()`"
+    },
+    {
+      "source": "createOwner()",
+      "target": "api()",
+      "source_files": [
+        "app/page.tsx",
+        "app/lib/api.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `createOwner()` unexpectedly reaches hub `api()`"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
