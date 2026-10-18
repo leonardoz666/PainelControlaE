@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -14,7 +15,6 @@ import {
   Database,
   ExternalLink,
   KeyRound,
-  LockKeyhole,
   LoaderCircle,
   LogOut,
   MonitorCheck,
@@ -35,51 +35,19 @@ import {
   establishmentLoginUrl,
   normalizeOperationalBaseUrl,
 } from "@/app/lib/operational-url";
-import { AuditHistory } from "@/app/components/AuditHistory";
-import { BrandingEditor } from "@/app/components/BrandingEditor";
-import { ModuleManager } from "@/app/components/ModuleManager";
+import { DeleteEstablishmentDialog, deletionConfirmation } from "@/app/components/dashboard/DeleteEstablishmentDialog";
+import { Field, FormActions } from "@/app/components/dashboard/FormControls";
+import type { Establishment, Status, Summary } from "@/app/components/dashboard/types";
 
-type Status = "TESTE" | "ATIVO" | "INADIMPLENTE" | "SUSPENSO" | "CANCELADO";
-type Summary = {
-  total: number;
-  ativos: number;
-  testes: number;
-  pendentes: number;
-  suspensos: number;
-};
-type Establishment = {
-  id: string;
-  nome: string;
-  slug: string;
-  documento: string | null;
-  email: string | null;
-  telefone: string | null;
-  garcomLatitude: number | null;
-  garcomLongitude: number | null;
-  garcomRaioMetros: number | null;
-  status: Status;
-  bancoConfigurado: boolean;
-  bancoPronto: boolean;
-  donoPronto: boolean;
-  impressaoConfigurada: boolean;
-  modulosAtivos: string[];
-  criadoEm: string;
-  assinatura: {
-    valorMensal: number;
-    proximoVencimento: string | null;
-    status: string;
-  } | null;
-  plano: { nome: string } | null;
-};
+const AuditHistory = dynamic(() => import("@/app/components/AuditHistory").then((module) => module.AuditHistory));
+const BrandingEditor = dynamic(() => import("@/app/components/BrandingEditor").then((module) => module.BrandingEditor));
+const ModuleManager = dynamic(() => import("@/app/components/ModuleManager").then((module) => module.ModuleManager));
 
 function optionalNumber(form: FormData, name: string): number | null {
   const value = String(form.get(name) ?? "").trim();
   return value === "" ? null : Number(value);
 }
 
-function deletionConfirmation(slug: string): string {
-  return `EXCLUIR ${slug}`;
-}
 
 const STATUS_LABEL: Record<Status, string> = {
   TESTE: "Em teste",
@@ -525,7 +493,7 @@ export default function DashboardPage() {
                 <Field name="valorMensal" label="Mensalidade" type="number" placeholder="0,00" />
                 <Field name="proximoVencimento" label="Próximo vencimento" type="date" />
                 <Field name="databaseUrl" label="Conexão PostgreSQL" type="password" required />
-                <OwnerActions saving={saving} onCancel={() => setShowCreate(false)} label="Cadastrar estabelecimento" />
+                <FormActions saving={saving} onCancel={() => setShowCreate(false)} label="Cadastrar estabelecimento" />
               </form>
             </section>
           )}
@@ -648,7 +616,7 @@ export default function DashboardPage() {
                           <Field name="garcomLongitude" label="Longitude para login de garçons" type="number" defaultValue={item.garcomLongitude == null ? "" : String(item.garcomLongitude)} />
                           <Field name="garcomRaioMetros" label="Raio permitido (metros)" type="number" defaultValue={item.garcomRaioMetros == null ? "" : String(item.garcomRaioMetros)} hint="Deixe os três campos vazios para não restringir o login por localização." />
                           <Field name="databaseUrl" label="Nova conexão PostgreSQL" type="password" placeholder="Manter conexão atual" hint="Ao trocar o banco, o cliente volta para Em teste e precisa ser preparado novamente." />
-                          <OwnerActions saving={saving} onCancel={() => setEditingFor(null)} label="Salvar alterações" />
+                          <FormActions saving={saving} onCancel={() => setEditingFor(null)} label="Salvar alterações" />
                         </div>
                         <div className="danger-zone">
                           <div>
@@ -703,7 +671,7 @@ export default function DashboardPage() {
                       <form onSubmit={updateSubscription} className="inline-form md:grid-cols-2">
                         <Field name="valorMensal" label="Mensalidade" type="number" defaultValue={String(item.assinatura?.valorMensal ?? 0)} required />
                         <Field name="proximoVencimento" label="Próximo vencimento" type="date" defaultValue={item.assinatura?.proximoVencimento?.slice(0, 10) || ""} />
-                        <OwnerActions saving={saving} onCancel={() => setBillingFor(null)} label="Salvar mensalidade" />
+                        <FormActions saving={saving} onCancel={() => setBillingFor(null)} label="Salvar mensalidade" />
                       </form>
                     )}
 
@@ -719,13 +687,13 @@ export default function DashboardPage() {
                             <Field name="login" label="Login" required />
                             <Field name="email" label="E-mail" type="email" />
                             <Field name="senha" label="Senha inicial" type="password" required />
-                            <OwnerActions saving={saving} onCancel={() => setOwnerFor(null)} label="Criar acesso do Dono" />
+                            <FormActions saving={saving} onCancel={() => setOwnerFor(null)} label="Criar acesso do Dono" />
                           </form>
                         ) : (
                           <form onSubmit={resetOwnerPassword} className="form-grid md:grid-cols-2">
                             <Field name="login" label="Login do Dono" required />
                             <Field name="senha" label="Nova senha" type="password" required />
-                            <OwnerActions saving={saving} onCancel={() => setOwnerFor(null)} label="Redefinir senha" />
+                            <FormActions saving={saving} onCancel={() => setOwnerFor(null)} label="Redefinir senha" />
                           </form>
                         )}
                       </div>
@@ -749,151 +717,6 @@ export default function DashboardPage() {
           onSubmit={deleteEstablishment}
         />
       ) : null}
-    </div>
-  );
-}
-
-function DeleteEstablishmentDialog({
-  item,
-  confirmation,
-  deleting,
-  error,
-  onConfirmationChange,
-  onClose,
-  onSubmit,
-}: {
-  item: Establishment;
-  confirmation: string;
-  deleting: boolean;
-  error: string;
-  onConfirmationChange: (value: string) => void;
-  onClose: () => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-}) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const requiredConfirmation = deletionConfirmation(item.slug);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    dialog.showModal();
-    return () => dialog.close();
-  }, []);
-
-  return (
-    <dialog ref={dialogRef} className="delete-dialog" aria-labelledby="delete-dialog-title" onCancel={(event) => { event.preventDefault(); if (!deleting) onClose(); }}>
-      <form onSubmit={onSubmit} className="delete-dialog-card">
-        <div className="delete-dialog-icon"><Trash2 size={24} /></div>
-        <div>
-          <h2 id="delete-dialog-title">Excluir {item.nome} definitivamente?</h2>
-          <p className="delete-dialog-lead">Esta ação destrói os dados do estabelecimento e não pode ser desfeita.</p>
-        </div>
-
-        <div className="delete-impact" role="note">
-          <strong>O que acontece</strong>
-          <ul>
-            <li>O link <b>{item.slug}</b>, todos os logins e o agente de impressão deixam de funcionar.</li>
-            <li>Pedidos, produtos, usuários, relatórios, dados financeiros e biometrias são apagados do banco PostgreSQL.</li>
-            <li>As imagens enviadas, a assinatura e todas as configurações são removidas.</li>
-            <li>Não existe recuperação automática. Apenas o registro administrativo da exclusão permanece.</li>
-          </ul>
-        </div>
-
-        {error ? <div className="delete-dialog-error" role="alert"><TriangleAlert size={18} />{error}</div> : null}
-
-        <label className="field">
-          <span>Digite o link para confirmar</span>
-          <input
-            value={confirmation}
-            onChange={(event) => onConfirmationChange(event.target.value)}
-            placeholder={requiredConfirmation}
-            autoComplete="off"
-            spellCheck={false}
-            required
-            autoFocus
-          />
-          <small className="field-hint">Digite exatamente: <b>{requiredConfirmation}</b></small>
-        </label>
-
-        <label className="field">
-          <span>Senha do administrador do painel</span>
-          <span className="password-field">
-            <LockKeyhole size={18} aria-hidden="true" />
-            <input name="senha" type="password" minLength={8} maxLength={200} autoComplete="current-password" required />
-          </span>
-        </label>
-
-        <div className="delete-dialog-actions">
-          <button type="button" className="secondary-button" onClick={onClose} disabled={deleting}>Cancelar</button>
-          <button type="submit" className="danger-button danger-button--solid" disabled={deleting || confirmation !== requiredConfirmation}>
-            {deleting ? <LoaderCircle size={18} className="animate-spin" /> : <Trash2 size={18} />}
-            {deleting ? "Excluindo tudo..." : "Excluir tudo definitivamente"}
-          </button>
-        </div>
-      </form>
-    </dialog>
-  );
-}
-
-function Field({
-  name,
-  label,
-  type = "text",
-  placeholder,
-  defaultValue,
-  hint,
-  required = false,
-}: {
-  name: string;
-  label: string;
-  type?: string;
-  placeholder?: string;
-  defaultValue?: string;
-  hint?: string;
-  required?: boolean;
-}) {
-  return (
-    <label className="field">
-      <span>{label}</span>
-      <input
-        name={name}
-        type={type}
-        step={type === "number" ? "0.01" : undefined}
-        min={type === "number" ? "0" : undefined}
-        required={required}
-        defaultValue={defaultValue}
-        placeholder={placeholder}
-        autoComplete="off"
-      />
-      {hint ? <small className="field-hint">{hint}</small> : null}
-    </label>
-  );
-}
-
-function OwnerActions({
-  saving,
-  onCancel,
-  label,
-}: {
-  saving: boolean;
-  onCancel: () => void;
-  label: string;
-}) {
-  return (
-    <div className="form-actions">
-      <button
-        type="button"
-        onClick={onCancel}
-        className="secondary-button"
-      >
-        Cancelar
-      </button>
-      <button
-        disabled={saving}
-        className="primary-button"
-      >
-        {label}
-      </button>
     </div>
   );
 }
