@@ -16,6 +16,7 @@ type Branding = {
   corPrimaria: string;
   corSecundaria: string;
   corDestaque: string;
+  corNavegacao: string;
   fonteInterface: "MODERNA" | "SISTEMA" | "CLASSICA";
   temaPadrao: "CLARO" | "ESCURO" | "SISTEMA";
 };
@@ -26,13 +27,14 @@ const DEFAULT_COLORS = {
   corPrimaria: "#ea580c",
   corSecundaria: "#0f172a",
   corDestaque: "#f97316",
+  corNavegacao: "#e9f0f7",
 };
 
 const PRESETS = [
-  { nome: "Laranja da casa", primaria: "#ea580c", secundaria: "#0f172a", destaque: "#f97316" },
-  { nome: "Verde cozinha", primaria: "#15803d", secundaria: "#14261b", destaque: "#f59e0b" },
-  { nome: "Azul contemporâneo", primaria: "#2563eb", secundaria: "#172554", destaque: "#f59e0b" },
-  { nome: "Vinho clássico", primaria: "#9f1239", secundaria: "#27131a", destaque: "#d97706" },
+  { nome: "Laranja da casa", primaria: "#ea580c", secundaria: "#0f172a", destaque: "#f97316", navegacao: "#e9f0f7" },
+  { nome: "Verde cozinha", primaria: "#15803d", secundaria: "#14261b", destaque: "#f59e0b", navegacao: "#e8f1eb" },
+  { nome: "Azul contemporâneo", primaria: "#2563eb", secundaria: "#172554", destaque: "#f59e0b", navegacao: "#e8eef8" },
+  { nome: "Vinho clássico", primaria: "#9f1239", secundaria: "#27131a", destaque: "#d97706", navegacao: "#f3e9ec" },
 ];
 
 function readableTextColor(hex: string): "#ffffff" | "#0f172a" {
@@ -182,6 +184,7 @@ export function BrandingEditor({
           corPrimaria: form.corPrimaria,
           corSecundaria: form.corSecundaria,
           corDestaque: form.corDestaque,
+          corNavegacao: form.corNavegacao,
           fonteInterface: form.fonteInterface,
           temaPadrao: form.temaPadrao,
         }),
@@ -249,7 +252,7 @@ export function BrandingEditor({
           <section className="branding-section">
             <div className="branding-section-title"><Palette size={18} aria-hidden="true" /><h5>Cores da identidade</h5></div>
             <div className="branding-color-grid">
-              {([['corPrimaria', 'Principal'], ['corSecundaria', 'Institucional'], ['corDestaque', 'Destaque']] as const).map(([field, label]) => (
+              {([['corPrimaria', 'Principal'], ['corSecundaria', 'Institucional'], ['corDestaque', 'Destaque'], ['corNavegacao', 'Barra lateral']] as const).map(([field, label]) => (
                 <label key={field} className="branding-color-field">
                   {label}
                   <span className="branding-color-controls">
@@ -260,7 +263,7 @@ export function BrandingEditor({
               ))}
             </div>
             <div className="branding-presets">
-              {PRESETS.map((preset) => <button key={preset.nome} type="button" onClick={() => setForm((current) => current ? { ...current, corPrimaria: preset.primaria, corSecundaria: preset.secundaria, corDestaque: preset.destaque } : current)} className="branding-preset"><span className="branding-preset-swatches" aria-hidden="true">{[preset.primaria, preset.secundaria, preset.destaque].map((color) => <i key={color} style={{ backgroundColor: color }} />)}</span>{preset.nome}</button>)}
+              {PRESETS.map((preset) => <button key={preset.nome} type="button" onClick={() => setForm((current) => current ? { ...current, corPrimaria: preset.primaria, corSecundaria: preset.secundaria, corDestaque: preset.destaque, corNavegacao: preset.navegacao } : current)} className="branding-preset"><span className="branding-preset-swatches" aria-hidden="true">{[preset.primaria, preset.secundaria, preset.destaque, preset.navegacao].map((color) => <i key={color} style={{ backgroundColor: color }} />)}</span>{preset.nome}</button>)}
             </div>
           </section>
 
@@ -299,6 +302,7 @@ export function BrandingEditor({
           </div>
           <div className="brand-preview-content" style={{ backgroundColor: darkPreview ? "#111c2e" : "#ffffff", color: darkPreview ? "#f8fafc" : form.corSecundaria }}>
             <p>Prévia do sistema</p>
+            <div className="brand-preview-navigation" style={{ backgroundColor: form.corNavegacao }}><span>Início</span><span>Atendimento</span><span>Financeiro</span></div>
             <div className="brand-preview-table"><div><strong>Mesa 08</strong><small>Em atendimento</small></div><span style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>Abrir mesa</span></div>
             <div className="brand-preview-accent" style={{ backgroundColor: form.corDestaque }} />
           </div>
