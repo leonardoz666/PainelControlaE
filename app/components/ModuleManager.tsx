@@ -8,8 +8,9 @@ type ModuleDefinition = {
   chave: string;
   nome: string;
   descricao: string;
+  grupo: string;
   fase: number;
-  dependencia?: string;
+  dependencias?: string[];
 };
 
 type ModuleManagerProps = {
@@ -51,6 +52,16 @@ export function ModuleManager({ establishment, onClose, onSaved }: ModuleManager
     [catalog],
   );
 
+  const modulesByGroup = useMemo(() => {
+    const groups = new Map<string, ModuleDefinition[]>();
+    for (const module of catalog) {
+      const current = groups.get(module.grupo) ?? [];
+      current.push(module);
+      groups.set(module.grupo, current);
+    }
+    return [...groups.entries()];
+  }, [catalog]);
+
   function toggle(key: string) {
     setSelected(current => {
       const next = new Set(current);
@@ -60,17 +71,19 @@ export function ModuleManager({ establishment, onClose, onSaved }: ModuleManager
         while (changed) {
           changed = false;
           for (const module of catalog) {
-            if (module.dependencia === key || (module.dependencia && !next.has(module.dependencia))) {
+            if (module.dependencias?.some(dependency => dependency === key || !next.has(dependency))) {
               changed = next.delete(module.chave) || changed;
             }
           }
         }
       } else {
         next.add(key);
-        let dependency = catalog.find(module => module.chave === key)?.dependencia;
-        while (dependency) {
+        const pending = [...(catalog.find(module => module.chave === key)?.dependencias ?? [])];
+        while (pending.length > 0) {
+          const dependency = pending.shift()!;
+          if (next.has(dependency)) continue;
           next.add(dependency);
-          dependency = catalog.find(module => module.chave === dependency)?.dependencia;
+          pending.push(...(catalog.find(module => module.chave === dependency)?.dependencias ?? []));
         }
       }
       return next;
@@ -109,31 +122,44 @@ export function ModuleManager({ establishment, onClose, onSaved }: ModuleManager
       ) : catalog.length === 0 && !error ? (
         <div className="module-loading"><PackageOpen size={18} aria-hidden="true" /> Nenhum módulo cadastrado.</div>
       ) : (
-        <div className="module-grid">
-          {catalog.map(module => {
-            const enabled = selected.has(module.chave);
-            return (
-              <button
-                type="button"
-                key={module.chave}
-                className={`module-option${enabled ? " active" : ""}`}
-                aria-pressed={enabled}
-                onClick={() => toggle(module.chave)}
-              >
-                <span className="module-check" aria-hidden="true">{enabled && <Check size={15} />}</span>
-                <span className="module-copy">
-                  <strong>{module.nome}</strong>
-                  <small>Fase {module.fase}</small>
-                  <span>{module.descricao}</span>
-                  {module.dependencia && <em>Requer {nameByKey.get(module.dependencia) ?? module.dependencia}</em>}
-                </span>
-              </button>
-            );
-          })}
+        <div className="module-groups">
+          {modulesByGroup.map(([group, modules]) => (
+            <section key={group} className="module-group" aria-labelledby={`module-group-${group}`}>
+              <h5 id={`module-group-${group}`}>{group}</h5>
+              <div className="module-grid">
+                {modules.map(module => {
+                  const enabled = selected.has(module.chave);
+                  const dependencies = module.dependencias?.map(dependency => nameByKey.get(dependency) ?? dependency) ?? [];
+                  return (
+                    <button
+                      type="button"
+                      key={module.chave}
+                      className={`module-option${enabled ? " active" : ""}`}
+                      aria-pressed={enabled}
+                      onClick={() => toggle(module.chave)}
+                    >
+                      <span className="module-check" aria-hidden="true">{enabled && <Check size={15} />}</span>
+                      <span className="module-copy">
+                        <strong>{module.nome}</strong>
+                        <span>{module.descricao}</span>
+                        {dependencies.length > 0 && <em>Requer {dependencies.join(", ")}</em>}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </div>
       )}
 
       {error && <p className="module-error" role="alert">{error}</p>}
+      {!loading && catalog.length > 0 && (
+        <div className="module-bulk-actions" aria-label="Ações para todos os módulos">
+          <button type="button" className="text-button" onClick={() => setSelected(new Set(catalog.map(module => module.chave)))}>Ativar todos</button>
+          <button type="button" className="text-button" onClick={() => setSelected(new Set())}>Desativar todos</button>
+        </div>
+      )}
       <div className="module-actions">
         <span>{selected.size} de {catalog.length} módulos selecionados</span>
         <button type="button" className="primary-button" onClick={() => void save()} disabled={loading || saving}>

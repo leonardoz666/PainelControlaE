@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- a logo é otimizada e armazenada como data URL */
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { ImagePlus, LoaderCircle, MonitorCog, Palette, RotateCcw, Save, Trash2 } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ImagePlus, LoaderCircle, Monitor, MonitorCog, Palette, RotateCcw, Save, Smartphone, Trash2 } from "lucide-react";
 import { api } from "@/app/lib/api";
 
 type Branding = {
@@ -13,6 +13,7 @@ type Branding = {
   logoCompactaUrl: string;
   faviconUrl: string;
   imagemLoginUrl: string;
+  imagemLoginPosicao: "ESQUERDA" | "CENTRO" | "DIREITA";
   corPrimaria: string;
   corSecundaria: string;
   corDestaque: string;
@@ -37,6 +38,12 @@ const PRESETS = [
   { nome: "Vinho clássico", primaria: "#9f1239", secundaria: "#27131a", destaque: "#d97706", navegacao: "#f3e9ec" },
 ];
 
+const LOGIN_IMAGE_POSITIONS: Record<Branding["imagemLoginPosicao"], string> = {
+  ESQUERDA: "left center",
+  CENTRO: "center",
+  DIREITA: "right center",
+};
+
 function readableTextColor(hex: string): "#ffffff" | "#0f172a" {
   const safe = /^#[0-9a-f]{6}$/i.test(hex) ? hex : DEFAULT_COLORS.corPrimaria;
   const channels = [1, 3, 5].map((offset) => Number.parseInt(safe.slice(offset, offset + 2), 16) / 255);
@@ -44,6 +51,20 @@ function readableTextColor(hex: string): "#ffffff" | "#0f172a" {
     .map((value) => value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4)
     .reduce((total, value, index) => total + value * [0.2126, 0.7152, 0.0722][index], 0);
   return 1.05 / (luminance + 0.05) >= 4.5 ? "#ffffff" : "#0f172a";
+}
+
+function relativeLuminance(hex: string): number {
+  if (!/^#[0-9a-f]{6}$/i.test(hex)) return 0;
+  return [1, 3, 5]
+    .map((offset) => Number.parseInt(hex.slice(offset, offset + 2), 16) / 255)
+    .map((value) => value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4)
+    .reduce((total, value, index) => total + value * [0.2126, 0.7152, 0.0722][index], 0);
+}
+
+function contrastRatio(first: string, second: string): number {
+  const lighter = Math.max(relativeLuminance(first), relativeLuminance(second));
+  const darker = Math.min(relativeLuminance(first), relativeLuminance(second));
+  return (lighter + 0.05) / (darker + 0.05);
 }
 
 const IMAGE_RULES: Record<ImageField, { width: number; height: number; maxLength: number; format: "image/png" | "image/webp"; quality?: number }> = {
@@ -134,6 +155,7 @@ export function BrandingEditor({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [imageLoading, setImageLoading] = useState<ImageField | null>(null);
+  const [previewDevice, setPreviewDevice] = useState<"DESKTOP" | "MOBILE">("DESKTOP");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -141,7 +163,9 @@ export function BrandingEditor({
     setLoading(true);
     setError("");
     void api<{ estabelecimento: Branding }>(`/estabelecimentos/${establishment.id}/branding`)
-      .then((response) => { if (active) setForm(response.estabelecimento); })
+      .then((response) => {
+        if (active) setForm({ ...response.estabelecimento, imagemLoginPosicao: response.estabelecimento.imagemLoginPosicao || "CENTRO" });
+      })
       .catch((reason) => { if (active) setError(reason instanceof Error ? reason.message : "Falha ao carregar a identidade visual"); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
@@ -181,6 +205,7 @@ export function BrandingEditor({
           logoCompactaUrl: form.logoCompactaUrl,
           faviconUrl: form.faviconUrl,
           imagemLoginUrl: form.imagemLoginUrl,
+          imagemLoginPosicao: form.imagemLoginPosicao,
           corPrimaria: form.corPrimaria,
           corSecundaria: form.corSecundaria,
           corDestaque: form.corDestaque,
@@ -213,6 +238,13 @@ export function BrandingEditor({
       : "'Manrope Variable', 'Segoe UI', sans-serif";
   const darkPreview = form.temaPadrao === "ESCURO";
   const navigationLogo = form.logoCompactaUrl || form.logoUrl;
+  const contrastChecks = [
+    { label: "Texto institucional sobre fundo claro", ratio: contrastRatio(form.corSecundaria, "#ffffff") },
+    { label: "Texto da barra lateral", ratio: contrastRatio(readableTextColor(form.corNavegacao), form.corNavegacao) },
+    { label: "Texto de ações principais", ratio: contrastRatio(readableTextColor(form.corPrimaria), form.corPrimaria) },
+    { label: "Texto de destaque", ratio: contrastRatio(readableTextColor(form.corDestaque), form.corDestaque) },
+  ];
+  const contrastWarnings = contrastChecks.filter((check) => check.ratio < 4.5);
 
   return (
     <form onSubmit={save} className="inline-form branding-editor">
@@ -265,6 +297,15 @@ export function BrandingEditor({
             <div className="branding-presets">
               {PRESETS.map((preset) => <button key={preset.nome} type="button" onClick={() => setForm((current) => current ? { ...current, corPrimaria: preset.primaria, corSecundaria: preset.secundaria, corDestaque: preset.destaque, corNavegacao: preset.navegacao } : current)} className="branding-preset"><span className="branding-preset-swatches" aria-hidden="true">{[preset.primaria, preset.secundaria, preset.destaque, preset.navegacao].map((color) => <i key={color} style={{ backgroundColor: color }} />)}</span>{preset.nome}</button>)}
             </div>
+            <div className={`branding-contrast${contrastWarnings.length > 0 ? " branding-contrast--warning" : " branding-contrast--ok"}`} role="status" aria-live="polite">
+              {contrastWarnings.length > 0 ? <AlertTriangle size={17} aria-hidden="true" /> : <CheckCircle2 size={17} aria-hidden="true" />}
+              <div>
+                <strong>{contrastWarnings.length > 0 ? "Revise o contraste" : "Contraste aprovado"}</strong>
+                <span>{contrastWarnings.length > 0
+                  ? contrastWarnings.map((check) => `${check.label} (${check.ratio.toFixed(1)}:1)`).join(" · ")
+                  : "As combinações de texto alcançam o mínimo de 4,5:1."}</span>
+              </div>
+            </div>
           </section>
 
           <section className="branding-section">
@@ -287,11 +328,30 @@ export function BrandingEditor({
                 </select>
               </label>
             </div>
+            <fieldset className="branding-position-field">
+              <legend>Posição da imagem de login</legend>
+              <div className="branding-position-options">
+                {([['ESQUERDA', 'Esquerda'], ['CENTRO', 'Centro'], ['DIREITA', 'Direita']] as const).map(([value, label]) => (
+                  <label key={value} className={form.imagemLoginPosicao === value ? "active" : ""}>
+                    <input type="radio" name="imagemLoginPosicao" value={value} checked={form.imagemLoginPosicao === value} onChange={() => update("imagemLoginPosicao", value)} />
+                    {label}
+                  </label>
+                ))}
+              </div>
+              <p>A posição define qual parte da foto permanece visível em telas largas.</p>
+            </fieldset>
             <p className="branding-note">O tema define a primeira abertura. Depois, cada usuário ainda pode escolher claro ou escuro no próprio aparelho.</p>
           </section>
         </div>
 
-        <aside className="branding-preview" style={{ fontFamily: previewFont }}>
+        <aside className={`branding-preview branding-preview--${previewDevice.toLowerCase()}`} style={{ fontFamily: previewFont }}>
+          <div className="branding-preview-toolbar">
+            <strong>Prévia</strong>
+            <div role="group" aria-label="Dispositivo da prévia">
+              <button type="button" className={previewDevice === "DESKTOP" ? "active" : ""} aria-pressed={previewDevice === "DESKTOP"} onClick={() => setPreviewDevice("DESKTOP")}><Monitor size={15} aria-hidden="true" />Computador</button>
+              <button type="button" className={previewDevice === "MOBILE" ? "active" : ""} aria-pressed={previewDevice === "MOBILE"} onClick={() => setPreviewDevice("MOBILE")}><Smartphone size={15} aria-hidden="true" />Celular</button>
+            </div>
+          </div>
           <div className="brand-preview-card">
           <div className="brand-preview-hero" style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>
             <div className="brand-preview-identity">
@@ -302,13 +362,13 @@ export function BrandingEditor({
           </div>
           <div className="brand-preview-content" style={{ backgroundColor: darkPreview ? "#111c2e" : "#ffffff", color: darkPreview ? "#f8fafc" : form.corSecundaria }}>
             <p>Prévia do sistema</p>
-            <div className="brand-preview-navigation" style={{ backgroundColor: form.corNavegacao }}><span>Início</span><span>Atendimento</span><span>Financeiro</span></div>
+            <div className="brand-preview-navigation" style={{ backgroundColor: form.corNavegacao }}><span style={{ backgroundColor: form.corDestaque, color: readableTextColor(form.corDestaque) }}>Início</span><span>Atendimento</span><span>Financeiro</span></div>
             <div className="brand-preview-table"><div><strong>Mesa 08</strong><small>Em atendimento</small></div><span style={{ backgroundColor: form.corPrimaria, color: readableTextColor(form.corPrimaria) }}>Abrir mesa</span></div>
             <div className="brand-preview-accent" style={{ backgroundColor: form.corDestaque }} />
           </div>
           </div>
 
-          <div className="brand-login-preview" style={{ backgroundColor: form.corPrimaria, backgroundImage: form.imagemLoginUrl ? `url(${form.imagemLoginUrl})` : undefined, backgroundPosition: "center", backgroundSize: "cover" }}>
+          <div className="brand-login-preview" style={{ backgroundColor: form.corPrimaria, backgroundImage: form.imagemLoginUrl ? `url(${form.imagemLoginUrl})` : undefined, backgroundPosition: LOGIN_IMAGE_POSITIONS[form.imagemLoginPosicao] || "center", backgroundSize: "cover" }}>
             <div className="brand-login-overlay" />
             <div className="brand-login-content">
               <div>
@@ -322,7 +382,7 @@ export function BrandingEditor({
       </div>
 
       <div className="branding-footer">
-        <button type="button" onClick={() => setForm({ ...form, nomeExibicao: form.nome, slogan: "Operação, atendimento e gestão em um só lugar.", logoUrl: "", logoCompactaUrl: "", faviconUrl: "", imagemLoginUrl: "", fonteInterface: "MODERNA", temaPadrao: "SISTEMA", ...DEFAULT_COLORS })} disabled={saving} className="secondary-button"><RotateCcw size={16} aria-hidden="true" />Restaurar padrão</button>
+        <button type="button" onClick={() => setForm({ ...form, nomeExibicao: form.nome, slogan: "Operação, atendimento e gestão em um só lugar.", logoUrl: "", logoCompactaUrl: "", faviconUrl: "", imagemLoginUrl: "", imagemLoginPosicao: "CENTRO", fonteInterface: "MODERNA", temaPadrao: "SISTEMA", ...DEFAULT_COLORS })} disabled={saving} className="secondary-button"><RotateCcw size={16} aria-hidden="true" />Restaurar padrão</button>
         <button type="submit" disabled={saving || Boolean(imageLoading)} className="primary-button"><Save size={17} aria-hidden="true" />{saving ? "Salvando…" : "Salvar personalização"}</button>
       </div>
     </form>
