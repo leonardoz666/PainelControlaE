@@ -36,6 +36,8 @@ import {
 } from "@/app/lib/operational-url";
 import { Field, FormActions } from "@/app/components/dashboard/FormControls";
 import { StatusSelect } from "@/app/components/dashboard/StatusSelect";
+import { DatabaseProgress, type DatabaseProgressState } from "@/app/components/dashboard/DatabaseProgress";
+import { DatabaseProvisioningError, provisionDatabaseWithProgress } from "@/app/lib/provisioning";
 import type { Establishment, Status, Summary } from "@/app/components/dashboard/types";
 
 const AuditHistory = dynamic(() => import("@/app/components/AuditHistory").then((module) => module.AuditHistory));
@@ -85,6 +87,7 @@ export default function DashboardPage() {
   const [ownerMode, setOwnerMode] = useState<"create" | "reset">("create");
   const [announcement, setAnnouncement] = useState("");
   const [provisioning, setProvisioning] = useState("");
+  const [databaseProgress, setDatabaseProgress] = useState<Record<string, DatabaseProgressState>>({});
   const [billingFor, setBillingFor] = useState<Establishment | null>(null);
   const [brandingFor, setBrandingFor] = useState<Establishment | null>(null);
   const [modulesFor, setModulesFor] = useState<Establishment | null>(null);
@@ -256,13 +259,20 @@ export default function DashboardPage() {
   }
 
   async function provisionDatabase(item: Establishment) {
+    if (provisioning) return;
     setProvisioning(item.id);
     setError("");
+    const operation = item.bancoPronto ? "Atualizar banco" : "Preparar banco";
+    setDatabaseProgress((current) => ({ ...current, [item.id]: { operation, status: "running", stage: "checking", step: 1, percent: 0, message: "Conectando ao servidor…" } }));
     try {
-      await api(`/estabelecimentos/${item.id}/provisionar`, { method: "POST" });
+      await provisionDatabaseWithProgress(item.id, (progress) => {
+        setDatabaseProgress((current) => ({ ...current, [item.id]: { ...progress, operation, status: "running" } }));
+      });
+      setDatabaseProgress((current) => ({ ...current, [item.id]: { ...current[item.id], status: "success", stage: "complete", step: 4, percent: 100, message: item.bancoPronto ? "Banco atualizado com sucesso." : "Banco preparado com sucesso." } }));
       await load();
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Falha ao preparar o banco");
+      const failure = reason instanceof DatabaseProvisioningError ? reason : new DatabaseProvisioningError("PROVISIONING_UNCONFIRMED", "Não foi possível confirmar a conclusão da operação do banco.", "Recarregue o painel para conferir o banco antes de tentar novamente.");
+      setDatabaseProgress((current) => ({ ...current, [item.id]: { ...current[item.id], status: "error", percent: Math.min(current[item.id].percent, 95), message: failure.message, recovery: { action: failure.action, code: failure.code, correlationId: failure.correlationId } } }));
     } finally {
       setProvisioning("");
     }
@@ -493,7 +503,7 @@ export default function DashboardPage() {
                       <button type="button" onClick={() => { setModulesFor((current) => current?.id === item.id ? null : item); setBrandingFor(null); setBillingFor(null); setOwnerFor(null); }}>
                         <Blocks size={20} aria-hidden="true" /><span>Módulos</span>
                       </button>
-                      <button type="button" onClick={() => void provisionDatabase(item)} disabled={provisioning === item.id} title="Aplicar atualizações no banco">
+                      <button type="button" onClick={() => void provisionDatabase(item)} disabled={Boolean(provisioning)} title="Aplicar atualizações no banco">
                         {provisioning === item.id ? <LoaderCircle size={20} className="animate-spin" aria-hidden="true" /> : <Database size={20} aria-hidden="true" />}
                         <span>{item.bancoPronto ? "Atualizar banco" : "Preparar banco"}</span>
                       </button>
@@ -510,6 +520,8 @@ export default function DashboardPage() {
                         <KeyRound size={19} aria-hidden="true" /><span>Dono e senha</span><ArrowRight size={16} aria-hidden="true" />
                       </button>
                     </div>
+
+                    {databaseProgress[item.id] ? <DatabaseProgress progress={databaseProgress[item.id]} /> : null}
 
                     {brandingFor?.id === item.id && (
                       <BrandingEditor

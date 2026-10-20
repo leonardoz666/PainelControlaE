@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "npm run typecheck && next build",
     "typecheck": "tsc --noEmit",
+    "test:provisioning": "node scripts/verify-provisioning.cjs",
     "start": "next start"
   },
   "dependencies": {
