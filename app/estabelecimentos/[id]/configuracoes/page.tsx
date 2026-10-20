@@ -31,6 +31,7 @@ export default function EstablishmentSettingsPage() {
   const router = useRouter();
   const establishmentId = String(params.id);
   const [item, setItem] = useState<Establishment | null>(null);
+  const [currentDatabaseUrl, setCurrentDatabaseUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -45,13 +46,17 @@ export default function EstablishmentSettingsPage() {
     setError("");
     try {
       await api("/auth/me");
-      const response = await api<{ data: Establishment[] }>("/estabelecimentos");
+      const [response, connection] = await Promise.all([
+        api<{ data: Establishment[] }>("/estabelecimentos"),
+        api<{ databaseUrl: string }>(`/estabelecimentos/${establishmentId}/conexao`),
+      ]);
       const establishment = response.data.find((candidate) => candidate.id === establishmentId);
       if (!establishment) {
         setError("Estabelecimento não encontrado.");
         return;
       }
       setItem(establishment);
+      setCurrentDatabaseUrl(connection.databaseUrl);
     } catch (reason) {
       if (reason instanceof ApiError && reason.status === 401) {
         router.replace("/login");
@@ -94,7 +99,7 @@ export default function EstablishmentSettingsPage() {
           garcomLongitude: optionalNumber(form, "garcomLongitude"),
           garcomRaioMetros: optionalNumber(form, "garcomRaioMetros"),
           exigirVinculoGarcom: form.get("exigirVinculoGarcom") === "on",
-          ...(databaseUrl ? { databaseUrl } : {}),
+          ...(databaseUrl && databaseUrl !== currentDatabaseUrl ? { databaseUrl } : {}),
         }),
       });
       setSavedMessage("Configurações salvas com sucesso.");
@@ -230,10 +235,10 @@ export default function EstablishmentSettingsPage() {
                   <section id="infraestrutura" className="settings-section">
                     <div className="settings-section-heading">
                       <Database size={19} aria-hidden="true" />
-                      <div><h2>Infraestrutura</h2><p>A conexão atual permanece protegida e nunca é exibida.</p></div>
+                      <div><h2>Infraestrutura</h2><p>Consulte e edite a conexão PostgreSQL deste estabelecimento.</p></div>
                     </div>
                     <div className="settings-database-field">
-                      <Field name="databaseUrl" label="Nova conexão PostgreSQL" type="password" placeholder="Manter conexão atual" />
+                      <Field name="databaseUrl" label="Conexão PostgreSQL" defaultValue={currentDatabaseUrl} required />
                     </div>
                     <div className="database-warning"><TriangleAlert size={17} aria-hidden="true" /><span>Trocar o banco devolve o cliente ao status <strong>Em teste</strong> e exige nova preparação.</span></div>
                   </section>

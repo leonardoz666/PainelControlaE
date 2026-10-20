@@ -24,7 +24,7 @@ O painel é usado em desktop para acompanhar a carteira de clientes e executar a
 
 ## Capabilities and Constraints
 
-- Cadastrar estabelecimentos e sua conexão PostgreSQL sem expor a URL no navegador.
+- Cadastrar estabelecimentos e consultar ou editar sua conexão PostgreSQL nas configurações, com acesso exclusivo ao CEO autenticado.
 - Preparar ou atualizar o banco operacional antes da ativação.
 - Criar ou reconciliar o usuário Dono e redefinir sua senha.
 - Editar mensalidade e vencimento, controlar status e gerar token de impressão.
